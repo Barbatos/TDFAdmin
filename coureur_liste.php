@@ -16,12 +16,38 @@ if( (G('t') == 'DESC') || (G('t') == 'ASC') ) {
 	$type = G('t');
 }
 
-$sql = 'SELECT * FROM TDF_COUREUR ORDER BY '.$order.' '.$type;
-$stmt = $bdd->prepare($sql);
+$stmt = $bdd->prepare('SELECT * FROM TDF_COUREUR ORDER BY '.$order.' '.$type);
 $stmt->execute();
 $listeCoureurs = $stmt->fetchAll(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// Si on veut supprimer un coureur
+if((G('act') == 'supprimer') && G('id')){
+
+	// On ne peut pas supprimer un coureur ayant au moins une participation au tour de France,
+	// donc on ne supprime pas si ANNEE_TDF est rempli.
+	// ANNEE_TDF correspond à l'année du premier TDF effectué par un coureur.
+	$stmt = $bdd->prepare('SELECT ANNEE_TDF FROM TDF_COUREUR WHERE N_COUREUR = :id');
+	$stmt->bindValue(':id', G('id'));
+	$stmt->execute();
+	$coureur = $stmt->fetch(PDO::FETCH_OBJ);
+	$stmt->closeCursor();
+
+	// On peut supprimer le coureur, il n'a jamais participé à un TDF.
+	if(!$coureur->ANNEE_TDF){
+
+		// Suppression du coureur.
+		$stmt = $bdd->prepare('DELETE FROM TDF_COUREUR WHERE N_COUREUR = :id');
+		$stmt->bindValue(':id', G('id'));
+		$stmt->execute();
+		$stmt->closeCursor();
+
+		message_redirect('Le coureur a bien été supprimé de la base. :(', 'coureur_liste.php', 1);
+	}
+	else {
+		message_redirect('Ce coureur ne peut être supprimé ! Il a déjà participé à un ou plusieurs TDF.', 'coureur_liste.php');
+	}
+}
 ?>
 
 <h1>Liste des coureurs</h1>
