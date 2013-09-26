@@ -114,7 +114,7 @@ if(P()){
 			<select name="anneeParticipation">
 				<option value="">---</option>
 				<?php 
-				for($i = date('Y'); $i >= 1903; $i--){
+				for($i = (date('Y') + 1); $i >= 1903; $i--){
 					$add = '';
 					if($infosCoureur->ANNEE_TDF == $i){
 						$add = 'selected=selected';

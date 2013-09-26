@@ -164,7 +164,7 @@ include_once("header.php");
 			<select name="anneeParticipation">
 				<option value="">---</option>
 				<?php 
-				for($i = date('Y'); $i >= 1996; $i--){
+				for($i = (date('Y') + 1); $i >= 1996; $i--){
 					$add = '';
 					if(P('anneeParticipation') == $i){
 						$add = 'selected=selected';
