@@ -15,31 +15,6 @@
 	        background-color: #f5f5f5;
 	      }
 
-	      .form-signin {
-	        max-width: 300px;
-	        padding: 19px 29px 29px;
-	        margin: 0 auto 20px;
-	        background-color: #fff;
-	        border: 1px solid #e5e5e5;
-	        -webkit-border-radius: 5px;
-	           -moz-border-radius: 5px;
-	                border-radius: 5px;
-	        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	                box-shadow: 0 1px 2px rgba(0,0,0,.05);
-	      }
-	      .form-signin .form-signin-heading,
-	      .form-signin .checkbox {
-	        margin-bottom: 10px;
-	      }
-	      .form-signin input[type="text"],
-	      .form-signin input[type="password"] {
-	        font-size: 16px;
-	        height: auto;
-	        margin-bottom: 15px;
-	        padding: 7px 9px;
-	      }
-
 	    </style>
 	    <link href="<?= $Site['base_address'] ?>assets/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -57,14 +32,37 @@
 						<li <?php if($currentPage == "Accueil") echo 'class="active"' ?>>
 							<a href="<?= $Site['base_address'] ?>">Accueil</a>
 						</li>
+
+						<li class="dropdown <?php if($currentPage == "Epreuve") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>epreuve_liste.php">Epreuves</a>
+						</li>
+
+						<li class="dropdown <?php if($currentPage == "Calendrier") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>calendrier_liste.php">Calendrier</a>
+						</li>
+
 						<li class="dropdown <?php if($currentPage == "Coureur") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>coureur_liste.php">Coureurs</a>
+						</li>
+
+						<li class="dropdown <?php if($currentPage == "Equipe") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>equipe_liste.php">Equipes</a>
+						</li>
+
+						<li class="dropdown <?php if($currentPage == "Sponsor") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>sponsor_liste.php">Sponsors</a>
+						</li>
+
+						<li class="dropdown <?php if($currentPage == "Autres") echo 'active' ?>">
 							<a href="" class="dropdown-toggle" data-toggle="dropdown">
-						      Gestion coureurs
-						      <b class="caret"></b>
+						      	Autres
+						      	<b class="caret"></b>
 						    </a>
 						    <ul class="dropdown-menu">
-						      	<li><a href="<?= $Site['base_address'] ?>coureur_liste.php">Liste des coureurs</a></li>
-						      	<li><a href="<?= $Site['base_address'] ?>coureur_ajouter.php">Ajouter un coureur</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>autres_categories_epreuves.php">Gérer les catégories d'épreuves</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>autres_commentaires.php">Gérer les commentaires</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>autres_directeurs.php">Gérer les directeurs</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>autres_pays.php">Gérer les pays</a></li>
 						    </ul>
 						</li>
 					</ul>
