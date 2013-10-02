@@ -103,7 +103,7 @@ function verifCoureur(){
 		error_add('Le nom doit être entré en majuscules sans accents.');
 	}
 
-	if(!preg_match('/^[A-Z]{1}([a-z-\' ]+)([A-Z]?){1}([a-z]+)$/', P('prenom'))){
+	if(!preg_match('/^[A-Z]{1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\-\' ]+)([A-Z]?){1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ]+)$/', P('prenom'))){
 		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
 	} 
 }
