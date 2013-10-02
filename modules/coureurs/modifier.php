@@ -54,7 +54,7 @@ if(P()){
 
 <br />
 
-<form class="form-horizontal" name="ajouterCoureur" method="post">
+<form class="form-horizontal" name="modifierCoureur" method="post">
 	<div class="control-group">
 		<label class="control-label" for="nom">Nom</label>
 		<div class="controls">
