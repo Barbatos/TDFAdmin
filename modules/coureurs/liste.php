@@ -2,8 +2,7 @@
 
 $currentPage = 'Coureur';
 
-include_once("includes/init.php");
-include_once("header.php");
+include_once(BASEPATH.'/modules/header.php');
 
 $order = 'NOM';
 $type = 'ASC';
@@ -42,10 +41,10 @@ if((G('act') == 'supprimer') && G('id')){
 		$stmt->execute();
 		$stmt->closeCursor();
 
-		message_redirect('Le coureur a bien été supprimé de la base. :(', 'coureur_liste.php', 1);
+		message_redirect('Le coureur a bien été supprimé de la base. :(', 'coureurs/liste/', 1);
 	}
 	else {
-		message_redirect('Ce coureur ne peut être supprimé ! Il a déjà participé à un ou plusieurs TDF.', 'coureur_liste.php');
+		message_redirect('Ce coureur ne peut être supprimé ! Il a déjà participé à un ou plusieurs TDF.', 'coureurs/liste/');
 	}
 }
 ?>
@@ -54,7 +53,7 @@ if((G('act') == 'supprimer') && G('id')){
 
 <br />
 
-<p><a href="<?= $Site['base_address'] ?>coureur_ajouter.php">Ajouter un coureur</a></p>
+<p><a href="<?= $Site['base_address'] ?>coureurs/ajouter/">Ajouter un coureur</a></p>
 
 <table class="table table-striped">
 	<thead>
@@ -81,9 +80,9 @@ if((G('act') == 'supprimer') && G('id')){
 			<td><?= $l->CODE_TDF ?></td>
 			<td><?= $l->ANNEE_TDF ?></td>
 			<td>
-				<a href="<?= $Site['base_address'] ?>coureur_modifier.php?id=<?= $l->N_COUREUR ?>">modifier</a> 
+				<a href="<?= $Site['base_address'] ?>coureurs/modifier/?id=<?= $l->N_COUREUR ?>">modifier</a> 
 				<?php if(empty($l->ANNEE_TDF)){ ?>
-				<a href="<?= $Site['base_address'] ?>coureur_liste.php?act=supprimer&id=<?= $l->N_COUREUR ?>"> - supprimer</a>
+				<a href="<?= $Site['base_address'] ?>coureurs/liste/?act=supprimer&id=<?= $l->N_COUREUR ?>"> - supprimer</a>
 				<?php } ?>
 			</td>
 		</tr>
@@ -92,6 +91,7 @@ if((G('act') == 'supprimer') && G('id')){
 		?>
 	</tbody>
 </table>
+
 <?php 
-include_once("footer.php");
+include_once(BASEPATH.'/modules/footer.php');
 ?>

@@ -1,13 +1,24 @@
 <?php
-session_start();
+
+// Charset
+header('Content-Type: text/html; charset=UTF-8');
+date_default_timezone_set('Europe/Paris');
+ini_set('arg_separator.output', '&amp;');
+mb_internal_encoding('UTF-8');
+
+ini_set('magic_quotes_runtime', 0);
 
 // Inclusion de fonctions diverses
-include_once("includes/fonctions.php");
+require_once("includes/fonctions.php");
+require_once("includes/table.class.php");
+require_once("includes/routage.class.php");
+
+Routage::Dispatch();
 
 // Connexion à la base de données
 $db['user'] 	= "copie_tdf";
 $db['password'] = "copie_tdf";
-$db['db'] 		= "oci:dbname=localhost/xe";
+$db['db'] 		= "oci:dbname=localhost/xe;charset=UTF8";
 
 $bdd = new PDO($db['db'],$db['user'],$db['password']);
 if(!$bdd){
@@ -22,3 +33,4 @@ if(!isset($_SESSION['errors'])){
 	$_SESSION['errors'] = array();
 	$_SESSION['messages'] = array();
 }
+

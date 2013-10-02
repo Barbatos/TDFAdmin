@@ -51,8 +51,6 @@ a+$         = followed by at least one or more
 
 $currentPage = 'Coureur';
 
-include_once("includes/init.php");
-
 if(P()){
 	if(!P('nom')) error_add('Le champ "nom" est obligatoire !');
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
@@ -76,7 +74,7 @@ if(P()){
 		$stmt->closeCursor();
 
 		if($correspondance){
-			message_redirect('Ce coureur existe déjà !', 'coureur_ajouter.php');
+			message_redirect('Ce coureur existe déjà !', 'coureurs/ajouter/');
 		}
 
 		// on ajoute le coureur dans la base
@@ -93,11 +91,11 @@ if(P()){
 		$stmt->execute();
 		$stmt->closeCursor();
 
-		message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été ajouté à la base !', 'coureur_liste.php', 1);
+		message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été ajouté à la base !', 'coureurs/ajouter/', 1);
 	}
 }
 
-include_once("header.php");
+include_once(BASEPATH.'/modules/header.php');
 ?>
 
 <h1>Ajouter un coureur</h1>
@@ -184,4 +182,4 @@ include_once("header.php");
 </form>
 
 
-<?php include_once("footer.php"); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); ?>

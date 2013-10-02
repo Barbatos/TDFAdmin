@@ -34,23 +34,23 @@
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Epreuve") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>epreuve_liste.php">Epreuves</a>
+							<a href="<?= $Site['base_address'] ?>epreuves/liste/">Epreuves</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Calendrier") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>calendrier_liste.php">Calendrier</a>
+							<a href="<?= $Site['base_address'] ?>calendrier/liste/">Calendrier</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Coureur") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>coureur_liste.php">Coureurs</a>
+							<a href="<?= $Site['base_address'] ?>coureurs/liste/">Coureurs</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Equipe") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>equipe_liste.php">Equipes</a>
+							<a href="<?= $Site['base_address'] ?>equipes/liste/">Equipes</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Sponsor") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>sponsor_liste.php">Sponsors</a>
+							<a href="<?= $Site['base_address'] ?>sponsors/liste/">Sponsors</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Autres") echo 'active' ?>">
@@ -59,10 +59,10 @@
 						      	<b class="caret"></b>
 						    </a>
 						    <ul class="dropdown-menu">
-						      	<li><a href="<?= $Site['base_address'] ?>autres_categories_epreuves.php">Gérer les catégories d'épreuves</a></li>
-						      	<li><a href="<?= $Site['base_address'] ?>autres_commentaires.php">Gérer les commentaires</a></li>
-						      	<li><a href="<?= $Site['base_address'] ?>autres_directeurs.php">Gérer les directeurs</a></li>
-						      	<li><a href="<?= $Site['base_address'] ?>autres_pays.php">Gérer les pays</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>categories-epreuves/liste/">Gérer les catégories d'épreuves</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>commentaires/liste/">Gérer les commentaires</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>directeurs/liste/">Gérer les directeurs</a></li>
+						      	<li><a href="<?= $Site['base_address'] ?>pays/liste/">Gérer les pays</a></li>
 						    </ul>
 						</li>
 					</ul>

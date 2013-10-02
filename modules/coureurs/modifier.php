@@ -1,14 +1,12 @@
 <?php
 
-include_once("includes/init.php");
-
 if(!G('id')){
 	exit('Arguments invalides!');
 }
 
 $currentPage = 'Coureur';
 
-include_once("header.php");
+include_once(BASEPATH.'/modules/header.php');
 
 $stmt = $bdd->prepare('SELECT * FROM TDF_COUREUR WHERE N_COUREUR = :id');
 $stmt->bindValue(':id', G('id'));
@@ -43,7 +41,7 @@ if(P()){
 		$stmt->execute();
 		$stmt->closeCursor();
 
-		message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été modifié !', 'coureur_liste.php', 1);
+		message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été modifié !', 'coureurs/liste/', 1);
 	}
 }
 ?>
@@ -52,7 +50,7 @@ if(P()){
 
 <br />
 
-<p><a href="<?= $Site['base_address'] ?>coureur_liste.php">Retour à la liste des coureurs</a></p>
+<p><a href="<?= $Site['base_address'] ?>coureurs/liste/">Retour à la liste des coureurs</a></p>
 
 <br />
 
@@ -131,5 +129,4 @@ if(P()){
 </form>
 
 <?php 
-include_once("footer.php");
-?>
+include_once(BASEPATH.'/modules/footer.php');
