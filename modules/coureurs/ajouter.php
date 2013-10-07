@@ -1,65 +1,12 @@
 <?php
-/*
-^        Start of line
-$        End of line
-n?        Zero or only one single occurrence of character 'n'
-n*        Zero or more occurrences of character 'n'
-n+        At least one or more occurrences of character 'n'
-n{2}        Exactly two occurrences of 'n'
-n{2,}        At least 2 or more occurrences of 'n'
-n{2,4}        From 2 to 4 occurrences of 'n'
-.        Any single character
-()        Parenthesis to group expressions
-(.*)        Zero or more occurrences of any single character, ie, anything!
-(n|a)        Either 'n' or 'a'
-[1-6]        Any single digit in the range between 1 and 6
-[c-h]        Any single lower case letter in the range between c and h
-[D-M]        Any single upper case letter in the range between D and M
-[^a-z]        Any single character EXCEPT any lower case letter between a and z.
-
-        Pitfall: the ^ symbol only acts as an EXCEPT rule if it is the 
-        very first character inside a range, and it denies the 
-        entire range including the ^ symbol itself if it appears again 
-        later in the range. Also remember that if it is the first 
-        character in the entire expression, it means "start of line". 
-        In any other place, it is always treated as a regular ^ symbol.
-        In other words, you cannot deny a word with ^undesired_word 
-        or a group with ^(undesired_phrase).
-        Read more detailed regex documentation to find out what is 
-        necessary to achieve this.
-
-[_4^a-zA-Z]    Any single character which can be the underscore or the 
-        number 4 or the ^ symbol or any letter, lower or upper case
-
-?, +, * and the {} count parameters can be appended not only to a single character, but also to a group() or a range[].
-
-therefore,
-^.{2}[a-z]{1,2}_?[0-9]*([1-6]|[a-f])[^1-9]{2}a+$
-would mean:
-
-^.{2}         = A line beginning with any two characters, 
-[a-z]{1,2}     = followed by either 1 or 2 lower case letters, 
-_?         = followed by an optional underscore, 
-[0-9]*         = followed by zero or more digits, 
-([1-6]|[a-f])     = followed by either a digit between 1 and 6 OR a 
-        lower case letter between a and f, 
-[^1-9]{2}     = followed by any two characters except digits 
-        between 1 and 9 (0 is possible), 
-a+$         = followed by at least one or more 
-        occurrences of 'a' at the end of a line.
-*/
 
 $currentPage = 'Coureurs';
 
 if(P()){
 	if(!P('nom')) error_add('Le champ "nom" est obligatoire !');
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
-	//if(!P('anneeNaissance')) error_add('manque année naissance wesh'); pas obligatoire
 	if(!P('pays')) error_add('Le champ "pays" est obligatoire !');
-	//if(!P('anneeParticipation')) error_add('lolol annee participation'); pas obligatoire
 	
-
-	// /^[A-Z]+$/
 	verifCoureur();
 	
 	if(!error_exists()){
