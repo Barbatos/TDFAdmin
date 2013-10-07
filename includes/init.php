@@ -20,7 +20,7 @@ $db['user'] 	= "copie_tdf";
 $db['password'] = "copie_tdf";
 $db['db'] 		= "oci:dbname=localhost/xe;charset=UTF8";
 
-$bdd = new PDO($db['db'],$db['user'],$db['password']);
+$bdd = new PDO($db['db'],$db['user'],$db['password'], array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 if(!$bdd){
 	exit('Erreur de connexion à la base de données.');
 }
