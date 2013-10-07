@@ -4,7 +4,7 @@ $currentPage = 'Epreuves';
 
 include_once(BASEPATH.'/modules/header.php');
 
-$order = 'ANNEE, N_EPREUVE';
+$order = 'ANNEE DESC, N_EPREUVE';
 $type = 'DESC';
 
 if(G('o')){
