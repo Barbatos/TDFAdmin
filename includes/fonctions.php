@@ -107,3 +107,26 @@ function verifCoureur(){
 		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
 	} 
 }
+
+function verifEpreuve(){
+	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('villeD'))) {
+		error_add('La ville de départ doit être entrée en majuscules sans accents.');
+	}
+
+	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('villeA'))) {
+		error_add('La ville d\'arrivée doit être entrée en majuscules sans accents.');
+	}
+
+	if(!preg_match('/^([0-9]+)([,]){0,1}([0-9]+)$/', P('distance'))) {
+		error_add('La distance doit être un nombre (éventuellement à virgule)');
+	}
+
+	if(!preg_match('/^([0-9]+)([,]){0,1}([0-9]+)$/', P('moyenne'))) {
+		error_add('La moyenne doit être un nombre (éventuellement à virgule)');
+	}
+
+	if(!preg_match('/^([0-9]+){2}([\/])([0-9]+){2}([\/])([0-9]+){2}$/', P('date'))) {
+		error_add('La date doit être sous la forme jj/mm/aa');
+	}
+}
+
