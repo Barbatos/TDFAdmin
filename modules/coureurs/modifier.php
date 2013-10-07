@@ -4,7 +4,7 @@ if(!G('id')){
 	exit('Arguments invalides!');
 }
 
-$currentPage = 'Coureur';
+$currentPage = 'Coureurs';
 
 include_once(BASEPATH.'/modules/header.php');
 

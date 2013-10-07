@@ -49,7 +49,7 @@ a+$         = followed by at least one or more
         occurrences of 'a' at the end of a line.
 */
 
-$currentPage = 'Coureur';
+$currentPage = 'Coureurs';
 
 if(P()){
 	if(!P('nom')) error_add('Le champ "nom" est obligatoire !');

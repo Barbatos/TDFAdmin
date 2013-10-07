@@ -1,6 +1,6 @@
 <?php
 
-$currentPage = 'Coureur';
+$currentPage = 'Coureurs';
 
 include_once(BASEPATH.'/modules/header.php');
 

@@ -33,7 +33,7 @@
 							<a href="<?= $Site['base_address'] ?>">Accueil</a>
 						</li>
 
-						<li class="dropdown <?php if($currentPage == "Epreuve") echo 'active' ?>">
+						<li class="dropdown <?php if($currentPage == "Epreuves") echo 'active' ?>">
 							<a href="<?= $Site['base_address'] ?>epreuves/liste/">Epreuves</a>
 						</li>
 
@@ -41,15 +41,15 @@
 							<a href="<?= $Site['base_address'] ?>calendrier/liste/">Calendrier</a>
 						</li>
 
-						<li class="dropdown <?php if($currentPage == "Coureur") echo 'active' ?>">
+						<li class="dropdown <?php if($currentPage == "Coureurs") echo 'active' ?>">
 							<a href="<?= $Site['base_address'] ?>coureurs/liste/">Coureurs</a>
 						</li>
 
-						<li class="dropdown <?php if($currentPage == "Equipe") echo 'active' ?>">
+						<li class="dropdown <?php if($currentPage == "Equipes") echo 'active' ?>">
 							<a href="<?= $Site['base_address'] ?>equipes/liste/">Equipes</a>
 						</li>
 
-						<li class="dropdown <?php if($currentPage == "Sponsor") echo 'active' ?>">
+						<li class="dropdown <?php if($currentPage == "Sponsors") echo 'active' ?>">
 							<a href="<?= $Site['base_address'] ?>sponsors/liste/">Sponsors</a>
 						</li>
 

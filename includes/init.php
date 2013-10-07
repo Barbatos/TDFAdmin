@@ -34,3 +34,4 @@ if(!isset($_SESSION['errors'])){
 	$_SESSION['messages'] = array();
 }
 
+$listeCatCodes = array('CME', 'CMI', 'ETA', 'PRO');
