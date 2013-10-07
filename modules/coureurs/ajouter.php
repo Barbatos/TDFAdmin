@@ -7,8 +7,10 @@ if(P()){
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
 	if(!P('pays')) error_add('Le champ "pays" est obligatoire !');
 	
-	verifCoureur();
-	
+	if(!checkNomCoureur(P('nom'))){
+		error_add('Le champ nom doit être entré en majuscules sans accents');
+	}
+
 	if(!error_exists()){
 
 		// on vérifie que le coureur n'existe pas déjà dans la base

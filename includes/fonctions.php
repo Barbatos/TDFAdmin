@@ -98,6 +98,65 @@ function error_exists(){
 	return (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) ? true : false;
 }
 
+// @url http://php.net/manual/fr/function.explode.php
+function multiexplode ($delimiters, $string) {
+	$ready = str_replace($delimiters, $delimiters[0], $string);
+	$launch = explode($delimiters[0], $ready);
+
+	return $launch;
+}
+
+function replaceAccents($var){
+	$var = str_replace(array('ä', 'à', 'â', 'ã', 'Ä', 'Â', 'À', 'Á', 'Ã'), 			'a', $var);
+	$var = str_replace(array('č', 'ĉ', 'ç', 'Ç'), 									'c', $var);
+	$var = str_replace(array('é', 'è', 'ê', 'ë', 'Ê', 'Ë', 'É', 'È'), 				'e', $var);
+	$var = str_replace(array('î', 'ï', 'ì', 'Î', 'Ï', 'Ì'), 						'i', $var);
+	$var = str_replace(array('ñ'), 													'n', $var);
+	$var = str_replace(array('ô', 'ò', 'ö', 'õ', 'ø', 'ð' , 'Ô', 'Ö', 'Ò', 'Õ'), 	'o', $var);
+	$var = str_replace(array('ù', 'û', 'ü', 'Ù', 'Û', 'Ü'), 						'u', $var);
+	$var = str_replace(array('Æ', 'æ'), 											'ae', $var);
+	$var = str_replace(array('œ', 'Œ'), 											'oe', $var);
+	$var = str_replace(array('ÿ', 'ý'), 											'y', $var);
+	return $var;
+}
+
+function checkNomCoureur($nom){
+	$nom = replaceAccents($nom);
+	$nom = strtoupper($nom);
+	$nom = trim($nom);
+	$nom = trim($nom, "-");
+
+	preg_match('/[A-Z]/', $nom, $test1);
+	preg_match('/-{3,}/', $nom, $test2);
+	preg_match('/^[A-Z\' -]/', $nom, $test3);
+	preg_match('/([A-Z\' ]+)([-]){2}([A-Z\' ]+)([-]){2}([A-Z\' ]+)/', $nom, $test4);
+
+	return ($test1 && !$test2 && $test3 && !$test4) ? true : false;
+}
+
+function checkPrenomCoureur($prenom){
+	if(preg_match('/[&~"#{([|`_\^@)]°}+=$¤£¨%µ*!§:;.,?<>]/', $prenom)) {
+		return false;
+	}
+	
+	$prenom = trim($prenom);
+	$exploded = multiexplode(array("-"," "), $prenom);
+	
+	foreach($exploded as $key => $t) {
+		if(!preg_match('/^[A-Z]/', $t)) {
+			return false;
+		}
+		if(!preg_match('/[a-zA-Zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ]$/', $t)) {
+			return false;
+		}
+		if(preg_match('/([A-Z]){1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])*([A-Z])+/', $t)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 function verifCoureur(){
 	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('nom'))) {
 		error_add('Le nom doit être entré en majuscules sans accents.');
