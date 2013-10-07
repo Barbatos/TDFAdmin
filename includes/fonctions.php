@@ -117,12 +117,12 @@ function verifEpreuve(){
 		error_add('La ville d\'arrivée doit être entrée en majuscules sans accents.');
 	}
 
-	if(!preg_match('/^([0-9]+)([,]){0,1}([0-9]+)$/', P('distance'))) {
-		error_add('La distance doit être un nombre (éventuellement à virgule)');
+	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('distance'))) {
+		error_add('La distance doit être un nombre (éventuellement décimal avec un point. par ex: 303.3)');
 	}
 
-	if(!preg_match('/^([0-9]+)([,]){0,1}([0-9]+)$/', P('moyenne'))) {
-		error_add('La moyenne doit être un nombre (éventuellement à virgule)');
+	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('moyenne'))) {
+		error_add('La moyenne doit être un nombre (éventuellement décimal avec un point. par ex: 50.13)');
 	}
 
 	if(!preg_match('/^([0-9]+){2}([\/])([0-9]+){2}([\/])([0-9]+){2}$/', P('date'))) {

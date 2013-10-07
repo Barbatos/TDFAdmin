@@ -33,8 +33,7 @@ if(P()){
 		$query = '
 			INSERT INTO TDF_EPREUVE (ANNEE, N_EPREUVE, VILLE_D, VILLE_A, DISTANCE, MOYENNE, CODE_TDF_D, CODE_TDF_A, JOUR, CAT_CODE) 
 			VALUES 
-			(:annee, :n_epreuve, :villed, :villea, :distance, :moyenne, :codetdfd, :codetdfa, :jour, :cat_code)';
-		echo $query;
+			(:annee, :n_epreuve, :villed, :villea, :distance, :moyenne, :codetdfd, :codetdfa, to_date(:jour, \'dd/mm/yy\'), :cat_code)';
 		$stmt = $bdd->prepare($query);
 		$stmt->bindValue(':annee', P('annee'));
 		$stmt->bindValue(':n_epreuve', P('numEpreuve'));
@@ -49,7 +48,6 @@ if(P()){
 		if($stmt->execute()){
 			message_redirect('L\'épreuve a bien été ajoutée à la base !', 'epreuves/liste/', 1);
 		}
-		else echo 'derp';
 		$stmt->closeCursor();
 	}
 }
