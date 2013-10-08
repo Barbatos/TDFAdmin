@@ -21,14 +21,15 @@ $listeEpreuves = $stmt->fetchAll(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
 // Si on veut supprimer une épreuve
-if((G('act') == 'supprimer') && G('id')){
+if((G('act') == 'supprimer') && G('id') && G('annee')){
 
-	$stmt = $bdd->prepare('DELETE FROM TDF_COUREUR WHERE N_COUREUR = :id');
+	$stmt = $bdd->prepare('DELETE FROM TDF_EPREUVE WHERE N_EPREUVE = :id AND ANNEE = :annee');
 	$stmt->bindValue(':id', G('id'));
+	$stmt->bindValue(':annee', G('annee'));
 	$stmt->execute();
 	$stmt->closeCursor();
 
-	message_redirect('L\'année a bien été supprimée de la base. :(', 'calendrier/liste/', 1);
+	message_redirect('L\'épreuve a bien été supprimée de la base. :(', 'epreuves/liste/', 1);
 }
 ?>
 
@@ -71,8 +72,8 @@ if((G('act') == 'supprimer') && G('id')){
 			<td><?= $l->JOUR ?></td>
 			<td><?= $l->CAT_CODE ?></td>
 			<td>
-				<a href="<?= $Site['base_address'] ?>calendrier/modifier/?id=<?= $l->ANNEE ?>">modifier</a> 
-				<a href="<?= $Site['base_address'] ?>calendrier/liste/?act=supprimer&id=<?= $l->ANNEE ?>"> - supprimer</a>
+				<a href="<?= $Site['base_address'] ?>epreuves/modifier/?id=<?= $l->N_EPREUVE ?>&annee=<?= $l->ANNEE ?>">modifier</a> 
+				<a href="<?= $Site['base_address'] ?>epreuves/liste/?act=supprimer&id=<?= $l->N_EPREUVE ?>&annee=<?= $l->ANNEE ?>"> - supprimer</a>
 			</td>
 		</tr>
 		<?php 
