@@ -11,6 +11,10 @@ if(P()){
 		error_add('Le champ nom doit être entré en majuscules sans accents');
 	}
 
+	if(!checkPrenomCoureur(P('prenom'))){
+		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
+	}
+
 	if(!error_exists()){
 
 		// on vérifie que le coureur n'existe pas déjà dans la base
@@ -37,10 +41,10 @@ if(P()){
 		$stmt->bindValue(':pays', P('pays'));
 		$stmt->bindValue(':naissance', P('anneeNaissance'));
 		$stmt->bindValue(':anneetdf', P('anneeParticipation'));
-		$stmt->execute();
+		if($stmt->execute()){
+			message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été ajouté à la base !', 'coureurs/liste/', 1);
+		}
 		$stmt->closeCursor();
-
-		message_redirect('Le coureur '.P('prenom').' '.P('nom').' a bien été ajouté à la base !', 'coureurs/ajouter/', 1);
 	}
 }
 
@@ -54,13 +58,13 @@ include_once(BASEPATH.'/modules/header.php');
 	<div class="control-group">
 		<label class="control-label" for="nom">Nom</label>
 		<div class="controls">
-			<input type="text" id="nom" name="nom" placeholder="DELAMARE" value="<?php if(P('nom')) echo P('nom') ?>">
+			<input type="text" id="nom" name="nom" placeholder="DELAMARE" value="<?php if(P('nom')) echo P('nom') ?>" maxlength="20">
 		</div>
 	</div>
 	<div class="control-group">
 		<label class="control-label" for="prenom">Prénom</label>
 		<div class="controls">
-			<input type="text" id="prenom" name="prenom" placeholder="Jojo" value="<?php if(P('prenom')) echo P('prenom') ?>">
+			<input type="text" id="prenom" name="prenom" placeholder="Jojo" value="<?php if(P('prenom')) echo P('prenom') ?>" maxlength="30">
 		</div>
 	</div>
 	<div class="control-group">

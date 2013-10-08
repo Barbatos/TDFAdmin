@@ -23,7 +23,13 @@ if(P()){
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
 	if(!P('pays')) error_add('Le champ "pays" est obligatoire !');
 	
-	verifCoureur();
+	if(!checkNomCoureur(P('nom'))){
+		error_add('Le champ nom doit être entré en majuscules sans accents');
+	}
+
+	if(!checkPrenomCoureur(P('prenom'))){
+		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
+	}
 	
 	if(!error_exists()){
 
