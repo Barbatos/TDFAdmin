@@ -1,10 +1,9 @@
 <?php
-$currentPage = 'Epreuve';
+$currentPage = 'Epreuves';
 
 if(P()){
 	
 	if(!P('annee')) error_add('Le champ année est obligatoire !');
-	if(!P('numEpreuve')) error_add('Le champ numéro d\'épreuve est obligatoire !');
 	if(!P('villeD')) error_add('Le champ ville de départ est obligatoire !');
 	if(!P('villeA')) error_add('Le champ ville d\'arrivée est obligatoire !');
 	if(!P('distance')) error_add('Le champ distance est obligatoire !');
@@ -13,19 +12,6 @@ if(P()){
 	if(!P('date')) error_add('Le champ date est obligatoire !');
 	if(!P('cat_code')) error_add('Le champ catégorie est obligatoire !');
 
-	// on vérifie que l'on a pas déjà une épreuve avec le même numéro
-	// et la même année dans la base
-	$stmt = $bdd->prepare('SELECT * FROM TDF_EPREUVE WHERE ANNEE = :annee AND N_EPREUVE = :epreuve');
-	$stmt->bindValue(':annee', P('annee'));
-	$stmt->bindValue(':epreuve', P('numEpreuve'));
-	$stmt->execute();
-	$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
-	$stmt->closeCursor();
-
-	if($correspondance){
-		message_redirect('Il y a déjà une épreuve ayant cette année et ce numéro !', 'epreuves/ajouter/');
-	}
-
 	verifEpreuve();
 
 	if(!error_exists()){
@@ -33,10 +19,12 @@ if(P()){
 		$query = '
 			INSERT INTO TDF_EPREUVE (ANNEE, N_EPREUVE, VILLE_D, VILLE_A, DISTANCE, MOYENNE, CODE_TDF_D, CODE_TDF_A, JOUR, CAT_CODE) 
 			VALUES 
-			(:annee, :n_epreuve, :villed, :villea, :distance, :moyenne, :codetdfd, :codetdfa, to_date(:jour, \'dd/mm/yy\'), :cat_code)';
+			(
+				:annee, (SELECT MAX(N_EPREUVE)+1 FROM TDF_EPREUVE WHERE ANNEE = :annee), :villed, :villea, 
+				:distance, :moyenne, :codetdfd, :codetdfa, to_date(:jour, \'dd/mm/yy\'), :cat_code
+			)';
 		$stmt = $bdd->prepare($query);
 		$stmt->bindValue(':annee', P('annee'));
-		$stmt->bindValue(':n_epreuve', P('numEpreuve'));
 		$stmt->bindValue(':villed', P('villeD'));
 		$stmt->bindValue(':villea', P('villeA'));
 		$stmt->bindValue(':distance', P('distance'));
@@ -69,23 +57,6 @@ include_once(BASEPATH.'/modules/header.php');
 				for($i = (date('Y')+10); $i >= 1950; $i--){
 					$add = '';
 					if(P('annee') == $i){
-						$add = 'selected=selected';
-					}
-					echo '<option value="'.$i.'" '.$add.'>'.$i.'</option>';
-				}
-				?>
-			</select>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label" for="numEpreuve">Num. épreuve</label>
-		<div class="controls">
-			<select name="numEpreuve">
-				<option value="">---</option>
-				<?php 
-				for($i = 0; $i <= 25; $i++){
-					$add = '';
-					if(P('numEpreuve') == $i){
 						$add = 'selected=selected';
 					}
 					echo '<option value="'.$i.'" '.$add.'>'.$i.'</option>';
@@ -185,12 +156,17 @@ include_once(BASEPATH.'/modules/header.php');
 			<select name="cat_code">
 				<option value="">---</option>
 				<?php 
+				$stmt = $bdd->prepare('SELECT * FROM TDF_CATEGORIE_EPREUVE ORDER BY CAT_CODE ASC');
+				$stmt->execute();
+				$listeCatCodes = $stmt->fetchAll(PDO::FETCH_OBJ);
+				$stmt->closeCursor();
+
 				foreach($listeCatCodes as $l){
 					$add = '';
-					if(P('cat_code') == $l){
+					if(P('cat_code') == $l->CAT_CODE){
 						$add = 'selected=selected';
 					}
-					echo '<option value="'.$l.'" '.$add.'>'.$l.'</option>';
+					echo '<option value="'.$l->CAT_CODE.'" '.$add.'>'.$l->LIBELLE.'</option>';
 				}
 				?>	
 			</select>
