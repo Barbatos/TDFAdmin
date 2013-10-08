@@ -131,7 +131,13 @@ function checkNomCoureur($nom){
 	preg_match('/^[A-Z\' -]/', $nom, $test3);
 	preg_match('/([A-Z\' ]+)([-]){2}([A-Z\' ]+)([-]){2}([A-Z\' ]+)/', $nom, $test4);
 
-	return ($test1 && !$test2 && $test3 && !$test4) ? true : false;
+	if($test1 && !$test2 && $test3 && !$test4){
+		$_POST['nom'] = $nom;
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 function checkPrenomCoureur($prenom){
@@ -139,6 +145,8 @@ function checkPrenomCoureur($prenom){
 		return false;
 	}
 	
+	$prenom = strtolower($prenom);
+	$prenom = ucfirst($prenom);
 	$prenom = trim($prenom);
 	$exploded = multiexplode(array("-"," "), $prenom);
 	
@@ -153,18 +161,9 @@ function checkPrenomCoureur($prenom){
 			return false;
 		}
 	}
-
+	
+	$_POST['prenom'] = $prenom;
 	return true;
-}
-
-function verifCoureur(){
-	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('nom'))) {
-		error_add('Le nom doit être entré en majuscules sans accents.');
-	}
-
-	if(!preg_match('/^[A-Z]{1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ\-\' ]+)([A-Z]?){1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ]+)$/', P('prenom'))){
-		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
-	} 
 }
 
 function verifEpreuve(){
