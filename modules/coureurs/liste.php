@@ -21,7 +21,7 @@ $listeCoureurs = $stmt->fetchAll(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
 // Si on veut supprimer un coureur
-if((G('act') == 'supprimer') && G('id')){
+if((G('action') == 'supprimer') && G('id')){
 
 	// On ne peut pas supprimer un coureur ayant au moins une participation au tour de France,
 	// donc on ne supprime pas si ANNEE_TDF est rempli.
@@ -82,7 +82,7 @@ if((G('act') == 'supprimer') && G('id')){
 			<td>
 				<a href="<?= $Site['base_address'] ?>coureurs/modifier/?id=<?= $l->N_COUREUR ?>">modifier</a> 
 				<?php if(empty($l->ANNEE_TDF)){ ?>
-				<a href="<?= $Site['base_address'] ?>coureurs/liste/?act=supprimer&id=<?= $l->N_COUREUR ?>"> - supprimer</a>
+				<a href="<?= $Site['base_address'] ?>coureurs/liste/?action=supprimer&id=<?= $l->N_COUREUR ?>"> - supprimer</a>
 				<?php } ?>
 			</td>
 		</tr>

@@ -21,9 +21,9 @@ $listeAnnees = $stmt->fetchAll(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
 // Si on veut supprimer une année
-if((G('act') == 'supprimer') && G('id')){
+if((G('action') == 'supprimer') && G('id')){
 
-	$stmt = $bdd->prepare('DELETE FROM TDF_COUREUR WHERE N_COUREUR = :id');
+	$stmt = $bdd->prepare('DELETE FROM TDF_ANNEE WHERE ANNEE = :id');
 	$stmt->bindValue(':id', G('id'));
 	$stmt->execute();
 	$stmt->closeCursor();
@@ -56,7 +56,7 @@ if((G('act') == 'supprimer') && G('id')){
 			<td><?= $l->JOUR_REPOS ?></td>
 			<td>
 				<a href="<?= $Site['base_address'] ?>calendrier/modifier/?id=<?= $l->ANNEE ?>">modifier</a> 
-				<a href="<?= $Site['base_address'] ?>calendrier/liste/?act=supprimer&id=<?= $l->ANNEE ?>"> - supprimer</a>
+				<a href="<?= $Site['base_address'] ?>calendrier/liste/?action=supprimer&id=<?= $l->ANNEE ?>"> - supprimer</a>
 			</td>
 		</tr>
 		<?php 

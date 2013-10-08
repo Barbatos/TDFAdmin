@@ -21,8 +21,7 @@ $listeEpreuves = $stmt->fetchAll(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
 // Si on veut supprimer une épreuve
-if((G('act') == 'supprimer') && G('id') && G('annee')){
-
+if((G('action') == 'supprimer') && G('id') && G('annee')){
 	$stmt = $bdd->prepare('DELETE FROM TDF_EPREUVE WHERE N_EPREUVE = :id AND ANNEE = :annee');
 	$stmt->bindValue(':id', G('id'));
 	$stmt->bindValue(':annee', G('annee'));
@@ -73,7 +72,7 @@ if((G('act') == 'supprimer') && G('id') && G('annee')){
 			<td><?= $l->CAT_CODE ?></td>
 			<td>
 				<a href="<?= $Site['base_address'] ?>epreuves/modifier/?id=<?= $l->N_EPREUVE ?>&annee=<?= $l->ANNEE ?>">modifier</a> 
-				<a href="<?= $Site['base_address'] ?>epreuves/liste/?act=supprimer&id=<?= $l->N_EPREUVE ?>&annee=<?= $l->ANNEE ?>"> - supprimer</a>
+				<a href="<?= $Site['base_address'] ?>epreuves/liste/?action=supprimer&id=<?= $l->N_EPREUVE ?>&annee=<?= $l->ANNEE ?>"> - supprimer</a>
 			</td>
 		</tr>
 		<?php 
