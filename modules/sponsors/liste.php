@@ -37,7 +37,6 @@ $stmt->closeCursor();
 			<th><a href="?o=NOM&t=<?= (((G('o') == 'NOM') && (G('t') == 'DESC'))) ? 'ASC' : 'DESC' ?>">NOM</a></th>
 			<th><a href="?o=NA_SPONSOR&t=<?= (((G('o') == 'NA_SPONSOR') && (G('t') == 'DESC'))) ? 'ASC' : 'DESC' ?>">NA_SPONSOR</a></th>
 			<th><a href="?o=CODE_TDF&t=<?= (((G('o') == 'CODE_TDF') && (G('t') == 'DESC'))) ? 'ASC' : 'DESC' ?>">CODE_TDF</a></th>
-			<th>Action</th>
 		</tr>
 	</thead>
 
@@ -52,11 +51,6 @@ $stmt->closeCursor();
 			<td><?= $l->NOM ?></td>
 			<td><?= $l->NA_SPONSOR ?></td>
 			<td><?= $l->CODE_TDF ?></td>
-			
-			<td>
-				<a href="<?= $Site['base_address'] ?>sponsors/modifier/?id=<?= $l->N_SPONSOR ?>&annee=<?= $l->ANNEE_SPONSOR ?>">modifier</a> 
-				<a href="<?= $Site['base_address'] ?>sponsors/liste/?action=supprimer&id=<?= $l->N_SPONSOR ?>&annee=<?= $l->ANNEE_SPONSOR ?>"> - supprimer</a>
-			</td>
 		</tr>
 		<?php 
 		}
