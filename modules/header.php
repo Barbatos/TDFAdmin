@@ -45,8 +45,8 @@
 							<a href="<?= $Site['base_address'] ?>coureurs/liste/">Coureurs</a>
 						</li>
 
-						<li class="dropdown <?php if($currentPage == "Equipes") echo 'active' ?>">
-							<a href="<?= $Site['base_address'] ?>equipes/liste/">Equipes</a>
+						<li class="dropdown <?php if($currentPage == "Participations") echo 'active' ?>">
+							<a href="<?= $Site['base_address'] ?>participations/liste/">Participations</a>
 						</li>
 
 						<li class="dropdown <?php if($currentPage == "Sponsors") echo 'active' ?>">
