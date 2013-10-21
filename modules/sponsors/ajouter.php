@@ -69,19 +69,24 @@ else if(!G('equipe') && G('new')){
 				message_redirect('Il existe déjà un sponsor actif ayant ce nom et ce pays.', 'sponsors/ajouter/');
 			}
 
+			// On génère le numéro de la nouvelle équipe
+			$stmt = $bdd->prepare('SELECT MAX(N_EQUIPE) AS MAX FROM TDF_EQUIPE');
+			$stmt->execute();
+			$maxNEquipe = $stmt->fetch(PDO::FETCH_OBJ);
+			$stmt->closeCursor();
+
+			$idEquipe = $maxNEquipe->MAX + 1;
+
 			// On ajoute la nouvelle équipe
 			$stmt = $bdd->prepare('
 				INSERT INTO TDF_EQUIPE (N_EQUIPE, ANNEE_CREATION)
 				VALUES 
-				( (SELECT MAX(N_EQUIPE) FROM TDF_EQUIPE) + 1, :annee)
+				( :idEquipe, :annee)
 			');
 			$stmt->bindValue(':annee', P('anneeCreation'));
+			$stmt->bindValue(':idEquipe', $idEquipe);
 			$stmt->execute();
 			$stmt->closeCursor();
-
-			// Maintenant on ajoute le sponsor en récupérant le numéro de l'équipe 
-			// que l'on vient de créer.
-			$idEquipe = $bdd->lastInsertId();
 
 			$stmt = $bdd->prepare('
 				INSERT INTO TDF_SPONSOR (N_EQUIPE, N_SPONSOR, NOM, NA_SPONSOR, CODE_TDF, ANNEE_SPONSOR)
@@ -95,10 +100,10 @@ else if(!G('equipe') && G('new')){
 			$stmt->bindValue(':pays', P('pays'));
 			$stmt->bindValue(':annee', P('annee'));
 			if($stmt->execute()){
-				message_redirect('Le sponsor et l\'équipe ont bien été créés !');
+				message_redirect('Le sponsor et l\'équipe ont bien été créés !', 'sponsors/liste/', 1);
 			}
 			else {
-				message_redirect('Impossible de créer le sponsor.');
+				message_redirect('Impossible de créer le sponsor.', 'sponsors/ajouter/');
 			}
 			$stmt->closeCursor();
 		}
