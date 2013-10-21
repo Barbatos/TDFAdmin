@@ -19,6 +19,26 @@ if(!G('equipe') && !G('new')){
 		- Une équipe existante : 
 			<select name="equipe">
 				<option value="">---</option>
+				<?php 
+				$stmt = $bdd->prepare('
+					SELECT * FROM TDF_EQUIPE e
+					LEFT JOIN TDF_SPONSOR s ON s.N_EQUIPE = e.N_EQUIPE
+					WHERE s.N_SPONSOR = 
+						(
+							SELECT MAX(N_SPONSOR) FROM TDF_SPONSOR WHERE N_EQUIPE = s.N_EQUIPE
+						)
+					AND e.ANNEE_DISPARITION IS NULL
+					ORDER BY s.NOM ASC
+				');
+				$stmt->execute();
+				$listeEquipes = $stmt->fetchAll(PDO::FETCH_OBJ);
+				$stmt->closeCursor();
+				foreach($listeEquipes as $le){
+				?>
+				<option value="<?= $le->N_EQUIPE ?>"><?= $le->NOM ?></option>
+				<?php 	
+				}
+				?>
 			</select>
 		<br />
 		- Une nouvelle équipe : <input type="submit" name="new" value="Go" class="btn" />
@@ -204,19 +224,7 @@ else if(!G('equipe') && G('new')){
 else {
 ?>
 
-	<form class="form-horizontal" name="ajouterSponsor" method="post">
-
-		<div class="control-group">
-			<label class="control-label" for="villeD">Ville départ</label>
-			<div class="controls">
-				<input type="text" name="villeD" value="<?= P('villeD') ?>" /> (en majuscules sans accents)
-			</div>
-		</div>
-		
-		<div class="control-group">
-			<button type="submit" class="btn btn-primary btn-info" name="envoyer">Ajouter</button>
-		</div>
-	</form>
+	
 
 <?php 	
 }
