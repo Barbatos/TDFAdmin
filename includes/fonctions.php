@@ -130,8 +130,9 @@ function checkNomCoureur($nom){
 	preg_match('/-{3,}/', $nom, $test2);
 	preg_match('/^[A-Z\' -]/', $nom, $test3);
 	preg_match('/([A-Z\' ]+)([-]){2}([A-Z\' ]+)([-]){2}([A-Z\' ]+)/', $nom, $test4);
+	preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $nom, $test5);
 
-	if($test1 && !$test2 && $test3 && !$test4){
+	if($test1 && !$test2 && $test3 && !$test4 && !$test5){
 		$_POST['nom'] = $nom;
 		return true;
 	}
@@ -141,7 +142,7 @@ function checkNomCoureur($nom){
 }
 
 function checkPrenomCoureur($prenom){
-	if(preg_match('/[&~"#{([|`_\^@)]°}+=$¤£¨%µ*!§:;.,?<>]/', $prenom)) {
+	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $prenom)) {
 		return false;
 	}
 	
