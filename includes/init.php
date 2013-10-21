@@ -10,7 +10,6 @@ ini_set('magic_quotes_runtime', 0);
 
 // Inclusion de fonctions diverses
 require_once("includes/fonctions.php");
-require_once("includes/table.class.php");
 require_once("includes/routage.class.php");
 
 Routage::Dispatch();
