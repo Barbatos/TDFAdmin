@@ -221,11 +221,150 @@ else if(!G('equipe') && G('new')){
          	                                                                    
 <?php 
 }
+
+// Ajouter un sponsor à une équipe existante
 else {
+
+	$stmt = $bdd->prepare('
+		SELECT * FROM TDF_EQUIPE e 
+		JOIN TDF_SPONSOR s ON s.N_EQUIPE = e.N_EQUIPE
+		WHERE e.N_EQUIPE = :equipe 
+		AND s.N_SPONSOR = (SELECT MAX(N_SPONSOR) FROM TDF_SPONSOR s2 WHERE s2.N_EQUIPE = :equipe)
+	'); /* AND e.ANNEE_DISPARITION IS NOT NULL */
+	$stmt->bindValue(':equipe', G('equipe'));
+	$stmt->execute();
+	$infosEquipe = $stmt->fetch(PDO::FETCH_OBJ);
+	$stmt->closeCursor();
+
+	if(P()){
+		if(!P('nom')) error_add('Le champ Nom est obligatoire !');
+		if(!P('pays')) error_add('Le champ Pays est obligatoire !');
+
+		if(P('annee') && (P('annee') < $infosEquipe->ANNEE_CREATION)) {
+			error_add('Cela n\'a aucun sens ! L\'année de participation du sponsor est plus vieille que l\'année de création de l\'équipe !!!');
+		}
+
+		//
+		//
+		//
+		//
+		// TODO : vérifier champ nom
+		//
+		//
+		//
+		//
+
+		if(!error_exists()){
+
+			// On vérifie qu'un sponsor ayant le même nom ne soit pas déjà dans la 
+			// liste des sponsors actifs.
+			// Le sponsor actif est le dernier sponsor d'une équipe qui n'a pas disparu.
+			$stmt = $bdd->prepare('
+				SELECT * FROM TDF_SPONSOR s 
+				JOIN TDF_EQUIPE e ON e.N_EQUIPE = s.N_EQUIPE 
+				WHERE s.NOM = :nom AND s.CODE_TDF = :pays AND e.N_EQUIPE = :equipe
+			');
+			$stmt->bindValue(':nom', P('nom'));
+			$stmt->bindValue(':pays', P('pays'));
+			$stmt->bindValue(':equipe', $infosEquipe->N_EQUIPE);
+			$stmt->execute();
+			$sponsorExiste = $stmt->fetchAll(PDO::FETCH_OBJ);
+			$stmt->closeCursor();
+
+			if($sponsorExiste){
+				message_redirect('Il existe déjà un sponsor actif ayant ce nom et ce pays.', 'sponsors/ajouter/');
+			}
+
+			$stmt = $bdd->prepare('
+				INSERT INTO TDF_SPONSOR (N_EQUIPE, N_SPONSOR, NOM, NA_SPONSOR, CODE_TDF, ANNEE_SPONSOR)
+				VALUES 
+				(:nEquipe, (SELECT MAX(N_SPONSOR) FROM TDF_SPONSOR WHERE N_EQUIPE = :nEquipe) + 1, :nom, :na, :pays, :annee)
+			');
+			$stmt->bindValue(':nEquipe', $infosEquipe->N_EQUIPE);
+			$stmt->bindValue(':nSponsor', 1);
+			$stmt->bindValue(':nom', P('nom'));
+			$stmt->bindValue(':na', P('nomAbrege'));
+			$stmt->bindValue(':pays', P('pays'));
+			$stmt->bindValue(':annee', P('annee'));
+			if($stmt->execute()){
+				message_redirect('Le sponsor a bien été créé !', 'sponsors/liste/', 1);
+			}
+			else {
+				message_redirect('Impossible de créer le sponsor.', 'sponsors/ajouter/');
+			}
+			$stmt->closeCursor();
+		}
+	}
 ?>
 
-	
+<h2>Ajouter un sponsor à l'équipe: <?= $infosEquipe->NOM ?></h2>
 
+
+	 <form class="form-horizontal" name="ajouterSponsor" method="post">
+		<fieldset>
+			<legend>Sponsor</legend>
+			<div class="control-group">
+				<label class="control-label" for="nom">Nom</label>
+				<div class="controls">
+					<input type="text" name="nom" value="<?= P('nom') ?>" maxlength="40" /> (en majuscules sans accents)
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="nom">Nom Abrégé</label>
+				<div class="controls">
+					<input type="text" name="nomAbrege" value="<?= P('nomAbrege') ?>" maxlength="3" /> (3 lettres en majuscules sans accents)
+				</div>
+			</div>
+			<?php 
+			$stmt = $bdd->prepare('SELECT * FROM TDF_PAYS ORDER BY NOM ASC');
+			$stmt->execute();
+			$listePays = $stmt->fetchAll(PDO::FETCH_OBJ);
+			$stmt->closeCursor();
+			?>
+			<div class="control-group">
+				<label class="control-label" for="pays">Pays</label>
+				<div class="controls">
+					<select name="pays">
+						<option value="">---</option>
+						<?php
+						foreach($listePays as $l){
+							$add = '';
+							if(P('paysD') == $l->CODE_TDF){
+								$add = 'selected=selected';
+							}
+							if(!P('paysD') && $l->CODE_TDF == 'FRA'){
+								$add=  'selected=selected';
+							}
+							echo '<option value="'.$l->CODE_TDF.'" '.$add.'>'.$l->NOM.'</option>';
+						} ?>	
+					</select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="annee">Année</label>
+				<div class="controls">
+					<select name="annee">
+						<option value="">---</option>
+						<?php 
+						for($i = (date('Y')+10); $i >= 1950; $i--){
+							$add = '';
+							if(P('annee') == $i){
+								$add = 'selected=selected';
+							}
+							echo '<option value="'.$i.'" '.$add.'>'.$i.'</option>';
+						}
+						?>
+					</select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<button type="submit" class="btn btn-primary btn-info" name="envoyer">Ajouter</button>
+			</div>
+
+		</fieldset>
+	</form>
 <?php 	
 }
 ?>
