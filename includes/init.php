@@ -32,3 +32,5 @@ if(!isset($_SESSION['errors'])){
 	$_SESSION['errors'] = array();
 	$_SESSION['messages'] = array();
 }
+
+define('MAX_NB_COUREURS', 9);
