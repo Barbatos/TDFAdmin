@@ -68,6 +68,10 @@ if(P()){
 				$numDossard = 1;
 			}
 			else {
+				
+				//
+				// FIXME: cela ne va pas fonctionner avec des numéros de dossards > 100 !!
+				//
 				if((int)$maxDossard->MAX < 10){
 					$numDossard = '11';
 				}
