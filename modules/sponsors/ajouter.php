@@ -14,7 +14,7 @@ if(!G('equipe') && !G('new')){
 	<h1>Ajouter un sponsor</h1>
 	<br />
 
-	<form method="get" action="" >
+	<form method="get" action="" class="form-inline">
 		Ajouter un sponsor à... <br />
 		- Une équipe existante : 
 			<select name="equipe">
@@ -40,7 +40,8 @@ if(!G('equipe') && !G('new')){
 				}
 				?>
 			</select>
-		<br />
+			<input type="submit" name="new" value="Go" class="btn" />
+		<br /><br />
 		- Une nouvelle équipe : <input type="submit" name="new" value="Go" class="btn" />
 	</form>
 
