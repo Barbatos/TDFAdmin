@@ -42,7 +42,9 @@ $stmt->closeCursor();
 
 <p><a href="<?= $Site['base_address'] ?>participations/liste/?annee=<?= G('annee') ?>">Retourner à la liste des équipes participantes</a></p>
 
+<?php if(sizeOf($listeCoureurs) < MAX_NB_COUREURS){ ?>
 <p><a href="<?= $Site['base_address'] ?>participations/ajouter-coureur/">Ajouter un coureur participant dans cette équipe</a></p>
+<?php } ?>
 
 <p>Nombre de coureurs: <strong><?= sizeof($listeCoureurs) ?> / <?= MAX_NB_COUREURS ?></strong></p>
 <table class="table table-striped">
