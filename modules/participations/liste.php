@@ -52,7 +52,7 @@ if(G('annee')) {
 
 <br />
 
-<p><a href="<?= $Site['base_address'] ?>participations/ajouter-equipe/">Ajouter une équipe participante</a></p>
+<p><a href="<?= $Site['base_address'] ?>participations/ajouter-equipe/?annee=<?= G('annee') ?>">Ajouter une équipe participante</a></p>
 
 <table class="table table-striped">
 	<thead>
