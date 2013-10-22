@@ -132,7 +132,7 @@ function checkNomCoureur($nom){
 	preg_match('/([A-Z\' ]+)([-]){2}([A-Z\' ]+)([-]){2}([A-Z\' ]+)/', $nom, $test4);
 	preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $nom, $test5);
 
-	if($test1 && !$test2 && $test3 && !$test4 && !$test5){
+	if($test1 && !$test2 && $test3 && !$test4 && !$test5 && (strlen($nom) < 20)) {
 		$_POST['nom'] = $nom;
 		return true;
 	}
@@ -142,16 +142,23 @@ function checkNomCoureur($nom){
 }
 
 function checkPrenomCoureur($prenom){
+	
+	$prenom = strtolower($prenom);
+	$prenom = trim($prenom);
+	$exploded = multiexplode(array("-"," "), $prenom);
+	$prenom2 = "";
+
+	
 	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $prenom)) {
 		return false;
 	}
 	
-	$prenom = strtolower($prenom);
-	$prenom = ucfirst($prenom);
-	$prenom = trim($prenom);
-	$exploded = multiexplode(array("-"," "), $prenom);
+	if(strlen($prenom) > 30) {
+		return false;
+	}
 	
 	foreach($exploded as $key => $t) {
+		$t = ucfirst($t);
 		if(!preg_match('/^[A-Z]/', $t)) {
 			return false;
 		}
@@ -161,8 +168,9 @@ function checkPrenomCoureur($prenom){
 		if(preg_match('/([A-Z]){1}([a-zàáâãäåçèéêëìíîïðòóôõöùúûüýÿ])*([A-Z])+/', $t)) {
 			return false;
 		}
+		$prenom2 .= " ".$t;
 	}
-	
+	$prenom = trim($prenom2);
 	$_POST['prenom'] = $prenom;
 	return true;
 }
