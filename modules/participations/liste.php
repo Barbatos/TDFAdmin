@@ -34,7 +34,14 @@ include_once(BASEPATH.'/modules/header.php');
 if(G('annee')) {
 
 	$stmt = $bdd->prepare('
-		SELECT d.NOM AS NOMDIR1, d.PRENOM AS PRENOMDIR1, d2.NOM AS NOMDIR2, d2.PRENOM AS PRENOMDIR2, s.*, ea.* FROM TDF_EQUIPE_ANNEE ea 
+		SELECT 
+			d.NOM AS NOMDIR1, 
+			d.PRENOM AS PRENOMDIR1, 
+			d2.NOM AS NOMDIR2, 
+			d2.PRENOM AS PRENOMDIR2, 
+			s.*, ea.*,
+			(SELECT COUNT(*) AS NB FROM TDF_PARTICIPATION WHERE N_EQUIPE = ea.N_EQUIPE AND ANNEE = :annee) AS NB_COUREURS 
+		FROM TDF_EQUIPE_ANNEE ea 
 		JOIN TDF_SPONSOR s ON s.N_SPONSOR = ea.N_SPONSOR AND s.N_EQUIPE = ea.N_EQUIPE
 		JOIN TDF_DIRECTEUR d ON d.N_DIRECTEUR = ea.N_PRE_DIRECTEUR
 		JOIN TDF_DIRECTEUR d2 ON d2.N_DIRECTEUR = ea.N_CO_DIRECTEUR
@@ -62,6 +69,7 @@ if(G('annee')) {
 			<th><a href="?o=NOM&t=<?= (((G('o') == 'NOM') && (G('t') == 'DESC'))) ? 'ASC' : 'DESC' ?>">SPONSOR</a></th>
 			<th>Directeur</th>
 			<th>Co Directeur</th>
+			<th>Nb coureurs</th>
 			<th>Action</th>
 		</tr>
 	</thead>
@@ -76,6 +84,7 @@ if(G('annee')) {
 			<td><?= $iz->NOM ?></td>
 			<td><?= $iz->PRENOMDIR1 . ' ' . $iz->NOMDIR1 ?></td>
 			<td><?= $iz->PRENOMDIR2 . ' ' . $iz->NOMDIR2 ?></td>
+			<td><?= $iz->NB_COUREURS ?></td>
 			<td><a href="<?= $Site['base_address'] ?>participations/liste-coureurs/?equipe=<?= $iz->N_EQUIPE ?>&annee=<?= $iz->ANNEE ?>">Voir la liste des coureurs</a></td>
 		</tr>
 		<?php 	
