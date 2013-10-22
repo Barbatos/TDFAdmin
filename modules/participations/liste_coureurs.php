@@ -1,5 +1,9 @@
 <?php
 
+if(!$admin->isLogged()){
+	message_redirect('Vous devez être identifié pour voir cette page !');
+}
+
 if(!G('equipe') || !G('annee')){
 	message_redirect('Il manque des arguments dans la requête !', 'participations/liste/');
 }

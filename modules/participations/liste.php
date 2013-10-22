@@ -1,5 +1,9 @@
 <?php
 
+if(!$admin->isLogged()){
+	message_redirect('Vous devez être identifié pour voir cette page !');
+}
+
 $currentPage = 'Participations';
 
 include_once(BASEPATH.'/modules/header.php');

@@ -1,5 +1,9 @@
 <?php
 
+if(!$admin->isLogged()){
+	message_redirect('Vous devez être identifié pour voir cette page !');
+}
+
 if(!G('annee')){
 	message_redirect('Il faut renseigner une année de participation !', 'sponsors/liste/');
 }
