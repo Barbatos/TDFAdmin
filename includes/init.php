@@ -11,6 +11,7 @@ ini_set('magic_quotes_runtime', 0);
 // Inclusion de fonctions diverses
 require_once("includes/fonctions.php");
 require_once("includes/routage.class.php");
+require_once("includes/admins.class.php");
 
 Routage::Dispatch();
 
@@ -34,3 +35,5 @@ if(!isset($_SESSION['errors'])){
 }
 
 define('MAX_NB_COUREURS', 9);
+
+$admin = new Admins($bdd);
