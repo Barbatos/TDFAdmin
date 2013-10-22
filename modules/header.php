@@ -65,6 +65,12 @@
 						      	<li><a href="<?= $Site['base_address'] ?>pays/liste/">Gérer les pays</a></li>
 						    </ul>
 						</li>
+
+						<?php if($admin->isLogged()){ ?>
+						<li>
+							<a href="?logout=1">Déconnexion</a>
+						</li>
+						<?php } ?>
 					</ul>
 				</div>
 			</div>
