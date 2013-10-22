@@ -43,7 +43,7 @@ if(G('annee')) {
 	');
 	$stmt->bindValue(':annee', G('annee'));
 	$stmt->execute();
-	$listeEquipes = $stmt->fetchAll(PDO::FETCH_OBJ);
+	$adrien = $stmt->fetchAll(PDO::FETCH_OBJ);
 	$stmt->closeCursor();
 ?>
 
@@ -52,7 +52,7 @@ if(G('annee')) {
 
 <br />
 
-<p><a href="<?= $Site['base_address'] ?>participations/ajouter/">Ajouter une équipe participante</a></p>
+<p><a href="<?= $Site['base_address'] ?>participations/ajouter-equipe/">Ajouter une équipe participante</a></p>
 
 <table class="table table-striped">
 	<thead>
@@ -62,19 +62,21 @@ if(G('annee')) {
 			<th><a href="?o=NOM&t=<?= (((G('o') == 'NOM') && (G('t') == 'DESC'))) ? 'ASC' : 'DESC' ?>">SPONSOR</a></th>
 			<th>Directeur</th>
 			<th>Co Directeur</th>
+			<th>Action</th>
 		</tr>
 	</thead>
 
 	<tbody>
 		<?php 
-		foreach($listeEquipes as $le){
+		foreach($adrien as $il => $iz){ // LOLOLOLOL Aziliz
 		?>
 		<tr>
-			<td><?= $le->ANNEE ?></td>
-			<td><?= $le->N_EQUIPE ?></td>
-			<td><?= $le->NOM ?></td>
-			<td><?= $le->PRENOMDIR1 . ' ' . $le->NOMDIR1 ?></td>
-			<td><?= $le->PRENOMDIR2 . ' ' . $le->NOMDIR2 ?></td>
+			<td><?= $iz->ANNEE ?></td>
+			<td><?= $iz->N_EQUIPE ?></td>
+			<td><?= $iz->NOM ?></td>
+			<td><?= $iz->PRENOMDIR1 . ' ' . $iz->NOMDIR1 ?></td>
+			<td><?= $iz->PRENOMDIR2 . ' ' . $iz->NOMDIR2 ?></td>
+			<td><a href="<?= $Site['base_address'] ?>participations/liste-coureurs/?equipe=<?= $iz->N_EQUIPE ?>&annee=<?= $iz->ANNEE ?>">Voir la liste des coureurs</a></td>
 		</tr>
 		<?php 	
 		}
@@ -82,7 +84,8 @@ if(G('annee')) {
 	</tbody>
 </table>
 
+
 <?php 
 }
 include_once(BASEPATH.'/modules/footer.php');
-?>
+
