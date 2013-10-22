@@ -65,15 +65,8 @@ else if(!G('equipe') && G('new')){
 			error_add('Cela n\'a aucun sens ! L\'année de participation du sponsor est plus vieille que l\'année de création de l\'équipe !!!');
 		}
 
-		//
-		//
-		//
-		//
-		// TODO : vérifier champ nom
-		//
-		//
-		//
-		//
+		$nom = P('nom');
+		$nom = strtoupper($nom);
 
 		if(!error_exists()){
 
@@ -85,7 +78,7 @@ else if(!G('equipe') && G('new')){
 				JOIN TDF_EQUIPE e ON e.N_EQUIPE = s.N_EQUIPE 
 				WHERE s.NOM = :nom AND s.CODE_TDF = :pays AND e.ANNEE_DISPARITION IS NULL
 			');
-			$stmt->bindValue(':nom', P('nom'));
+			$stmt->bindValue(':nom', $nom);
 			$stmt->bindValue(':pays', P('pays'));
 			$stmt->execute();
 			$sponsorExiste = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -121,7 +114,7 @@ else if(!G('equipe') && G('new')){
 			');
 			$stmt->bindValue(':nEquipe', $idEquipe);
 			$stmt->bindValue(':nSponsor', 1);
-			$stmt->bindValue(':nom', P('nom'));
+			$stmt->bindValue(':nom', $nom);
 			$stmt->bindValue(':na', P('nomAbrege'));
 			$stmt->bindValue(':pays', P('pays'));
 			$stmt->bindValue(':annee', P('annee'));
