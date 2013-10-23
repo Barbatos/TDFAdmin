@@ -38,6 +38,14 @@ if(P()){
 	if(!P('tep')) error_add('Le tep code est obligatoire !');
 	if(!P('libelle')) error_add('Le libellé est obligatoire !');
 
+	if(!checkCatCode(P('cat'))){
+		error_add('Le cat code n\'est pas bon !');
+	}
+
+	if(!checkTepCode(P('tep'))){
+		error_add('Le tep code n\'est pas bon !');
+	}
+
 	if(!error_exists()){
 		// on vérifie que la catégorie n'existe pas déjà dans la base
 		$stmt = $bdd->prepare('SELECT * FROM TDF_CATEGORIE_EPREUVE WHERE CAT_CODE = :id');

@@ -133,7 +133,7 @@ function multiexplode ($delimiters, $string) {
 }
 
 function replaceAccents($var){
-	$var = str_replace(array('ä', 'à', 'â', 'ã', 'Ä', 'Â', 'À', 'Á', 'Ã'), 			'a', $var);
+	$var = str_replace(array('ä', 'à', 'â', 'ã', 'Ä', 'Â', 'À', 'Á', 'Ã', 'Å'), 	'a', $var);
 	$var = str_replace(array('č', 'ĉ', 'ç', 'Ç'), 									'c', $var);
 	$var = str_replace(array('é', 'è', 'ê', 'ë', 'Ê', 'Ë', 'É', 'È'), 				'e', $var);
 	$var = str_replace(array('î', 'ï', 'ì', 'Î', 'Ï', 'Ì'), 						'i', $var);
@@ -147,14 +147,14 @@ function replaceAccents($var){
 }
 
 function replaceAccents2($var){
-	$var = str_replace(array('Ä', 'Â', 'À', 'Á', 'Ã'), 			'a', $var);
-	$var = str_replace(array('Ç'), 									'c', $var);
-	$var = str_replace(array('Ê', 'Ë', 'É', 'È'), 				'e', $var);
-	$var = str_replace(array('Î', 'Ï', 'Ì'), 						'i', $var);
-	$var = str_replace(array('Ô', 'Ö', 'Ò', 'Õ'), 	'o', $var);
-	$var = str_replace(array('Ù', 'Û', 'Ü'), 						'u', $var);
-	$var = str_replace(array('Æ'), 											'ae', $var);
-	$var = str_replace(array('Œ'), 											'oe', $var);
+	$var = str_replace(array('Ä', 'Â', 'À', 'Á', 'Ã'), 								'a', $var);
+	$var = str_replace(array('Ç'), 													'c', $var);
+	$var = str_replace(array('Ê', 'Ë', 'É', 'È'), 									'e', $var);
+	$var = str_replace(array('Î', 'Ï', 'Ì'), 										'i', $var);
+	$var = str_replace(array('Ô', 'Ö', 'Ò', 'Õ'), 									'o', $var);
+	$var = str_replace(array('Ù', 'Û', 'Ü'), 										'u', $var);
+	$var = str_replace(array('Æ'), 													'ae', $var);
+	$var = str_replace(array('Œ'), 													'oe', $var);
 	return $var;
 }
 
@@ -268,5 +268,37 @@ function checkAbregeSponsor($nom) {
 	}
 
 	$_POST['nomAbrege'] = $nom;
+	return true;
+}
+
+function checkCatCode($nom){
+	$nom = replaceAccents($nom);
+	$nom = strtoupper($nom);
+
+	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>1-9]/', $nom)) {
+		return false;
+	}
+
+	if(strlen($nom) > 3){
+		return false;
+	}
+
+	$_POST['cat'] = $nom;
+	return true;
+}
+
+function checkTepCode($nom){
+	$nom = replaceAccents($nom);
+	$nom = strtoupper($nom);
+
+	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>1-9]/', $nom)) {
+		return false;
+	}
+
+	if(strlen($nom) > 2){
+		return false;
+	}
+
+	$_POST['tep'] = $nom;
 	return true;
 }

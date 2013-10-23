@@ -37,11 +37,17 @@ $nomsCoureurs = array(
 	'Jean-Paul',
 	'Jean-Paul-Olivier',
 	'Jean Paul Olivier',
-	'Jean\'s Derp--Herp-Derp Blop',
+	'Jean\'s DerpHerp',
 	'MAR"ISE',
 	'nADaL',
 	'NADÇAL',
 	'NAD-A-L',
+	'N--A-D-A-L',
+	'--NAD-AL',
+	'NA--D AL-EUH',
+	'NA--Eeé Dé-Ala',
+	'-NADAL-',
+	'NADA--L',
 	'NA--D-A-LÅ',
 	'NA--Dal',
 	'F ederer',
@@ -56,6 +62,7 @@ $nomsCoureurs = array(
 	'ÈJeançéÈÈ',
 	'J---e-Êan',
 	'Jean--PaÊul--Durand',
+	'Jean--PaÊul-Durand',
 );
 
 foreach($nomsCoureurs as $val){
