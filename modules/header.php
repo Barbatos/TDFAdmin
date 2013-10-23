@@ -91,7 +91,7 @@ THE SOFTWARE.
 						      	<li><a href="<?= $Site['base_address'] ?>categories-epreuves/liste/">Gérer les catégories d'épreuves</a></li>
 						      	<li><a href="<?= $Site['base_address'] ?>commentaires/liste/">Gérer les commentaires</a></li>
 						      	<li><a href="<?= $Site['base_address'] ?>directeurs/liste/">Gérer les directeurs</a></li>
-						      	<li><a href="<?= $Site['base_address'] ?>pays/liste/">Gérer les pays</a></li>
+						      	<!--<li><a href="<?= $Site['base_address'] ?>pays/liste/">Gérer les pays</a></li>-->
 						    </ul>
 						</li>
 
