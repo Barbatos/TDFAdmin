@@ -217,12 +217,11 @@ function checkNomVilleEpreuve($nom){
 	}
 }
 
-function checkAbregSponsor($nom) {
+function checkAbregeSponsor($nom) {
 
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);
 	$nom = trim($nom);
-
 
 	if (strlen($nom) > 3) {
 		return false;
