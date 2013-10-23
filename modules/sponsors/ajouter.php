@@ -68,6 +68,10 @@ else if(!G('equipe') && G('new')){
 		$nom = P('nom');
 		$nom = strtoupper($nom);
 
+		if(!checkAbregeSponsor(P('nomAbrege'))){
+			error_add('Le nom abrégé est invalide !');
+		}
+
 		if(!error_exists()){
 
 			// On vérifie qu'un sponsor ayant le même nom ne soit pas déjà dans la 
