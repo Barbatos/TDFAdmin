@@ -176,11 +176,11 @@ function checkPrenomCoureur($prenom){
 }
 
 function verifEpreuve(){
-	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('villeD'))) {
+	if(checkNomVilleEpreuve( P('villeD') )) {
 		error_add('La ville de départ doit être entrée en majuscules sans accents.');
 	}
 
-	if(!preg_match('/^([A-Z]+)([A-Z-\' ]+)([A-Z]+)$/', P('villeA'))) {
+	if(!checkNomVilleEpreuve( P('villeA') )) {
 		error_add('La ville d\'arrivée doit être entrée en majuscules sans accents.');
 	}
 
@@ -197,3 +197,41 @@ function verifEpreuve(){
 	}
 }
 
+function checkNomVilleEpreuve($nom){
+	$nom = replaceAccents($nom);
+	$nom = strtoupper($nom);
+	$nom = trim($nom);
+	$nom = trim($nom, "-");
+
+	preg_match('/[A-Z1-9]/', $nom, $test1);
+	preg_match('/-{3,}/', $nom, $test2);
+	preg_match('/^[A-Z1-9\' -]/', $nom, $test3);
+	preg_match('/([A-Z1-9\' ]+)([-]){2}([A-Z1-9\' ]+)([-]){2}([A-Z1-9\' ]+)/', $nom, $test4);
+	preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $nom, $test5);
+
+	if($test1 && !$test2 && $test3 && !$test4 && !$test5 && (strlen($nom) < 20)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+function checkAbregSponsor($nom) {
+
+	$nom = replaceAccents($nom);
+	$nom = strtoupper($nom);
+	$nom = trim($nom);
+
+
+	if (strlen($nom) > 3) {
+		return false;
+	}
+
+	if(!preg_match('/[A-Z]/', $nom)) {
+		return false;
+	}
+
+	$_POST['nomAbrege'] = $nom;
+	return true;
+}
