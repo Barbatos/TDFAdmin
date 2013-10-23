@@ -40,9 +40,9 @@ $nomsCoureurs = array(
 	'Jean\'s Derp--Herp-Derp Blop',
 	'MAR"ISE',
 	'nADaL',
-	'NADAL',
+	'NADÇAL',
 	'NAD-A-L',
-	'NA--D-A-L',
+	'NA--D-A-LÅ',
 	'NA--Dal',
 	'F ederer',
 	'FedereR',
@@ -53,11 +53,11 @@ $nomsCoureurs = array(
 	'Jean Pierre--Durand',
 	'Jean-Pierre_Durand',
 	'Jean\\Dupont',
-	'Jeançé',
-	'J---e-an',
-	'Jean--Paul--Durand',
+	'ÈJeançéÈÈ',
+	'J---e-Êan',
+	'Jean--PaÊul--Durand',
 );
 
 foreach($nomsCoureurs as $val){
-	echo $val.' : '.((checkNomCoureur($val)) ? 1 : 0).'<br />';
+	echo $val.' : '.((checkNomCoureur($val)) ? '<font color="green">OK</font>' : '<font color="red">FAUX</font>').((checkNomCoureur($val)) ? '&emsp;&emsp;&emsp; final: '.$_POST['nom'] : '').'<br />';
 }

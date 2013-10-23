@@ -38,8 +38,11 @@ $prenomsCoureurs = array(
 	'\'',
 	'\'\'',
 	'\\\\',
-	'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+	'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
 
+	'ÇzefZR',
+	'aGFgÈÈe',
+	'Êêeaé4',
 	'A',
 	'a',
 	'Aa',
@@ -78,7 +81,7 @@ $prenomsCoureurs = array(
 	'Aa\'Aa--Aa',
 	'Aa--Aa\'Aa',
 
-	'éèàçöïôêëù',
+	'Deréàöôêëù',
 	'€',
 	'$',
 	'+=/*-+',
@@ -104,5 +107,5 @@ $prenomsCoureurs = array(
 );
 
 foreach($prenomsCoureurs as $val){
-	echo $val.' : '.((checkPrenomCoureur($val)) ? 1 : 0).'<br />';
+	echo $val.' : '.((checkPrenomCoureur($val)) ? '<font color="green">OK</font>' : '<font color="red">FAUX</font>').((checkPrenomCoureur($val)) ? '&emsp;&emsp;&emsp; final: '.$_POST['prenom'] : '').'<br />';
 }

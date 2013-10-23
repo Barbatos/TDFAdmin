@@ -146,6 +146,18 @@ function replaceAccents($var){
 	return $var;
 }
 
+function replaceAccents2($var){
+	$var = str_replace(array('Ä', 'Â', 'À', 'Á', 'Ã'), 			'a', $var);
+	$var = str_replace(array('Ç'), 									'c', $var);
+	$var = str_replace(array('Ê', 'Ë', 'É', 'È'), 				'e', $var);
+	$var = str_replace(array('Î', 'Ï', 'Ì'), 						'i', $var);
+	$var = str_replace(array('Ô', 'Ö', 'Ò', 'Õ'), 	'o', $var);
+	$var = str_replace(array('Ù', 'Û', 'Ü'), 						'u', $var);
+	$var = str_replace(array('Æ'), 											'ae', $var);
+	$var = str_replace(array('Œ'), 											'oe', $var);
+	return $var;
+}
+
 function checkNomCoureur($nom){
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);
@@ -170,12 +182,13 @@ function checkNomCoureur($nom){
 function checkPrenomCoureur($prenom){
 	
 	$prenom = strtolower($prenom);
+	$prenom = replaceAccents2($prenom);
 	$prenom = trim($prenom);
 	$exploded = multiexplode(array("-"," "), $prenom);
 	$prenom2 = "";
 
 	
-	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $prenom)) {
+	if(preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>1-9]/', $prenom)) {
 		return false;
 	}
 	
@@ -202,7 +215,7 @@ function checkPrenomCoureur($prenom){
 }
 
 function verifEpreuve(){
-	if(checkNomVilleEpreuve( P('villeD') )) {
+	if(!checkNomVilleEpreuve( P('villeD') )) {
 		error_add('La ville de départ doit être entrée en majuscules sans accents.');
 	}
 
@@ -210,15 +223,15 @@ function verifEpreuve(){
 		error_add('La ville d\'arrivée doit être entrée en majuscules sans accents.');
 	}
 
-	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('distance'))) {
-		error_add('La distance doit être un nombre (éventuellement décimal avec un point. par ex: 303.3)');
+	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('distance')) || (P('distance') < 0)) {
+		error_add('La distance doit être un nombre positif (éventuellement décimal avec un point. par ex: 303.3)');
 	}
 
-	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('moyenne'))) {
-		error_add('La moyenne doit être un nombre (éventuellement décimal avec un point. par ex: 50.13)');
+	if(!preg_match('/^([0-9]+)([.]){0,1}([0-9]+)$/', P('moyenne')) || (P('moyenne') < 0)) {
+		error_add('La moyenne doit être un nombre positif (éventuellement décimal avec un point. par ex: 50.13)');
 	}
 
-	if(!preg_match('/^([0-9]+){2}([\/])([0-9]+){2}([\/])([0-9]+){2}$/', P('date'))) {
+	if(!preg_match('/^([0-9]){2}([\/])([0-9]){2}([\/])([0-9]){2}$/', P('date'))) {
 		error_add('La date doit être sous la forme jj/mm/aa');
 	}
 }
@@ -230,12 +243,9 @@ function checkNomVilleEpreuve($nom){
 	$nom = trim($nom, "-");
 
 	preg_match('/[A-Z1-9]/', $nom, $test1);
-	preg_match('/-{3,}/', $nom, $test2);
-	preg_match('/^[A-Z1-9\' -]/', $nom, $test3);
-	preg_match('/([A-Z1-9\' ]+)([-]){2}([A-Z1-9\' ]+)([-]){2}([A-Z1-9\' ]+)/', $nom, $test4);
 	preg_match('/[&~\"#\{\(\[\|`_\\\^@\)\]°\}\+=\$¤£¨%µ*!§:;\.,\?<>]/', $nom, $test5);
 
-	if($test1 && !$test2 && $test3 && !$test4 && !$test5 && (strlen($nom) < 20)) {
+	if($test1 && !$test5 && (strlen($nom) < 20)) {
 		return true;
 	}
 	else {
