@@ -23,15 +23,18 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
-// Charset
+// On définit le charset et le timezone
 header('Content-Type: text/html; charset=UTF-8');
+mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Paris');
 ini_set('arg_separator.output', '&amp;');
-mb_internal_encoding('UTF-8');
 
+// On force la désactivation des magic quotes
 ini_set('magic_quotes_runtime', 0);
 
 // Inclusion de fonctions diverses
@@ -39,6 +42,7 @@ require_once("includes/fonctions.php");
 require_once("includes/routage.class.php");
 require_once("includes/admins.class.php");
 
+// On récupère les paramètres GET
 Routage::Dispatch();
 
 // Connexion à la base de données
@@ -53,13 +57,18 @@ if(!$bdd){
 
 unset($db);
 
+// Adresse de base du projet
 $Site['base_address'] = 'http://localhost/projetphp/';
 
+// Pas de messages à afficher ? On initialise quand même 
+// les variables afin de ne pas avoir de notices de php.
 if(!isset($_SESSION['errors'])){
 	$_SESSION['errors'] = array();
 	$_SESSION['messages'] = array();
 }
 
+// Nombre maximum de coureurs par équipe
 define('MAX_NB_COUREURS', 9);
 
+// On crée une instance de la classe admins
 $admin = new Admins($bdd);

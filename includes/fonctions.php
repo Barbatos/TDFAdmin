@@ -23,9 +23,18 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+/**
+ * Vérifie si le visiteur est connecté
+ *
+ * @return 	true si l'utilisateur est connecté, sinon false
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function est_connecte(){
 	if(isset($_SESSION['id']) && !empty($_SESSION['id'])){
 		return true;
@@ -35,11 +44,29 @@ function est_connecte(){
 	}
 }
 
+/**
+ * Sécurise une chaîne de caractères.
+ *
+ * @param 	$string - chaîne de caractère
+ * @return 	la chaîne sécurisée
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function s($string)
 {
 	return stripslashes(stripslashes(htmlspecialchars($string)));
 }
 
+/**
+ * Récupère et sécurise un élément $_GET
+ *
+ * @param 	$string - chaîne de caractère - le paramètre à récupérer
+ * @param 	$index - si string est un tableau, permet de récupérer un
+ *				champ spécifique du tableau.
+ * @return 	le contenu du champ
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function G($str, $index = NULL)
 {
 	if(!isset($index)):
@@ -60,7 +87,16 @@ function G($str, $index = NULL)
 	endif;	
 }
 
-// $_POST
+/**
+ * Récupère et sécurise un élément $_POST
+ *
+ * @param 	$string - chaîne de caractère - le paramètre à récupérer
+ * @param 	$index - si string est un tableau, permet de récupérer un
+ *				champ spécifique du tableau.
+ * @return 	le contenu du champ
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function P($str = NULL, $index = NULL)
 {
 	if(!isset($str)){
@@ -91,14 +127,40 @@ function P($str = NULL, $index = NULL)
 	
 }
 
+/**
+ * Ajoute un message d'erreur.
+ *
+ * @param 	$error - chaîne de caractères - l'erreur à afficher
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function error_add($error){
 	$_SESSION['errors'][]['error'] = $error;
 }
 
+/**
+ * Ajoute un message de confirmation.
+ *
+ * @param 	$message - chaîne de caractères - le message à afficher
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function message_add($message){
 	$_SESSION['messages'][]['message'] = $message;
 }
 
+/**
+ * Redirige l'utilisateur sur une page avec affichage
+ * d'un message ou d'une erreur.
+ *
+ * @param 	$message - le message à afficher
+ * @param 	$url - l'url sur laquelle rediriger l'utilisateur
+ * @param 	$type - le type du message:
+ *				1: message normal
+ *				autre: message d'erreur
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function message_redirect($message, $url = 'index.php', $type = 0){
 	global $Site;
 
@@ -120,11 +182,27 @@ function message_redirect($message, $url = 'index.php', $type = 0){
 	exit();
 }
 
+/**
+ * Vérifie s'il existe des erreurs à afficher.
+ *
+ * @return 	true s'il y a des erreurs, sinon false
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function error_exists(){
 	return (isset($_SESSION['errors']) && !empty($_SESSION['errors'])) ? true : false;
 }
 
-// @url http://php.net/manual/fr/function.explode.php
+/**
+ * Effectue un multiexplode.
+ *
+ * @param 	$delimiters - la liste des délimiteurs
+ * @param 	$string - la chaîne à traiter
+ * @return 	la chaîne traitée
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ * @link 	http://php.net/manual/fr/function.explode.php
+ */
 function multiexplode ($delimiters, $string) {
 	$ready = str_replace($delimiters, $delimiters[0], $string);
 	$launch = explode($delimiters[0], $ready);
@@ -132,6 +210,14 @@ function multiexplode ($delimiters, $string) {
 	return $launch;
 }
 
+/**
+ * Remplace les accents dans une chaîne de caractères.
+ *
+ * @param 	$var - la chaîne de caractères à traiter
+ * @return 	la chaîne traitée
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function replaceAccents($var){
 	$var = str_replace(array('ä', 'à', 'â', 'ã', 'Ä', 'Â', 'À', 'Á', 'Ã', 'Å'), 	'a', $var);
 	$var = str_replace(array('č', 'ĉ', 'ç', 'Ç'), 									'c', $var);
@@ -146,6 +232,15 @@ function replaceAccents($var){
 	return $var;
 }
 
+/**
+ * Remplace les accents majuscules uniquement 
+ * dans une chaîne de caractères.
+ *
+ * @param 	$var - la chaîne de caractères à traiter
+ * @return 	la chaîne traitée
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function replaceAccents2($var){
 	$var = str_replace(array('Ä', 'Â', 'À', 'Á', 'Ã'), 								'a', $var);
 	$var = str_replace(array('Ç'), 													'c', $var);
@@ -158,6 +253,15 @@ function replaceAccents2($var){
 	return $var;
 }
 
+/**
+ * Vérifie que le nom d'un coureur respecte les règles
+ * syntaxiques exigées par le cahier des charges.
+ *
+ * @param 	$nom - la chaîne de caractères du nom du coureur
+ * @return 	false si le nom est invalide, sinon true
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function checkNomCoureur($nom){
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);
@@ -179,6 +283,15 @@ function checkNomCoureur($nom){
 	}
 }
 
+/**
+ * Vérifie que le prénom d'un coureur respecte les règles
+ * syntaxiques exigées par le cahier des charges.
+ *
+ * @param 	$prenom - la chaîne de caractères du prénom du coureur
+ * @return 	false si le prénom est invalide, sinon true
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function checkPrenomCoureur($prenom){
 	
 	$prenom = strtolower($prenom);
@@ -214,6 +327,13 @@ function checkPrenomCoureur($prenom){
 	return true;
 }
 
+/**
+ * Vérifie que les informations d'une épreuve respectent les règles
+ * syntaxiques exigées par le cahier des charges.
+ *
+ * @author 	Charles 'Barbatos' Duprey
+ * @access 	public
+ */
 function verifEpreuve(){
 	if(!checkNomVilleEpreuve( P('villeD') )) {
 		error_add('La ville de départ doit être entrée en majuscules sans accents.');
@@ -236,6 +356,15 @@ function verifEpreuve(){
 	}
 }
 
+/**
+ * Vérifie que le nom d'une ville d'épreuve respecte les règles
+ * syntaxiques exigées par le cahier des charges.
+ *
+ * @author 	Charles 'Barbatos' Duprey
+ * @param 	$nom - le nom de ville
+ * @return 	false si le nom est invalide, sinon true
+ * @access 	public
+ */
 function checkNomVilleEpreuve($nom){
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);
@@ -253,6 +382,15 @@ function checkNomVilleEpreuve($nom){
 	}
 }
 
+/**
+ * Vérifie que le nom abrégé d'un sponsor respecte les règles
+ * syntaxiques exigées par le cahier des charges.
+ *
+ * @author 	Charles 'Barbatos' Duprey
+ * @param 	$nom - le nom abrégé
+ * @return 	false si le nom est invalide, sinon true
+ * @access 	public
+ */
 function checkAbregeSponsor($nom) {
 
 	$nom = replaceAccents($nom);
@@ -271,6 +409,15 @@ function checkAbregeSponsor($nom) {
 	return true;
 }
 
+/**
+ * Vérifie que le cat code d'une catégorie d'épreuve respecte 
+ * les règles syntaxiques exigées par le cahier des charges.
+ *
+ * @author 	Charles 'Barbatos' Duprey
+ * @param 	$nom - le cat code
+ * @return 	false si le nom est invalide, sinon true
+ * @access 	public
+ */
 function checkCatCode($nom){
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);
@@ -287,6 +434,15 @@ function checkCatCode($nom){
 	return true;
 }
 
+/**
+ * Vérifie que le tep code d'une catégorie d'épreuve respecte 
+ * les règles syntaxiques exigées par le cahier des charges.
+ *
+ * @author 	Charles 'Barbatos' Duprey
+ * @param 	$nom - le tep code
+ * @return 	false si le nom est invalide, sinon true
+ * @access 	public
+ */
 function checkTepCode($nom){
 	$nom = replaceAccents($nom);
 	$nom = strtoupper($nom);

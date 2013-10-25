@@ -23,6 +23,8 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
@@ -38,7 +40,7 @@ class Admins
 		/* Si l'utilisateur n'est pas loggué ($_SESSION vide) et qu'on trouve des cookies correspondant 
 		 * au site, alors on essaye de le logguer en comparant les hash
 		 */
-		if(empty($_SESSION['id']) && !empty($_COOKIE['tdfadmin']) && !empty($_COOKIE['tdfadmin_mbrid']))
+		/*if(empty($_SESSION['id']) && !empty($_COOKIE['tdfadmin']) && !empty($_COOKIE['tdfadmin_mbrid']))
 		{
 			$browser = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
@@ -51,8 +53,8 @@ class Admins
 			$hash = sha1('efrtHR9078rgtjh98'.sha1($browser).'regKUEFHu'.sha1($data->PSEUDO).'eggEFaqx122'.sha1($data->ID).'egg98876grfPOOIH96'.sha1($data->PASSWORD).'rtyjukilopPOHJ98765GHJKr');
 			if($hash == $_COOKIE['tdfadmin'])
 			{
-				setcookie("tdfadmin", $hash, strtotime("+1 month"), '/');
-				setcookie("tdfadmin_mbrid", $data->id, strtotime("+1 month"), '/'); 
+				//setcookie("tdfadmin", $hash, strtotime("+1 month"), '/');
+				//setcookie("tdfadmin_mbrid", $data->id, strtotime("+1 month"), '/'); 
 					
 				$_SESSION['id'] = $data->ID;
 			}
@@ -60,7 +62,7 @@ class Admins
 			{
 				$this->logout();
 			}
-		}
+		}*/
 	}
 	
 	/* Vérifie si l'admin est loggué */
@@ -94,8 +96,8 @@ class Admins
 		$browser = (isset($_SERVER['HTTP_USER_AGENT'])) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
 		$hash = sha1('regrIHEFIH'.sha1($browser).'regKUEFHu'.sha1($data->PSEUDO).'eggEFaqx122'.sha1($data->ID).'egg98876grfPOOIH96'.sha1($data->PASSWORD).'rtyjukilopPOHJ98765GHJKr');
-		setcookie("tdfadmin", $hash, strtotime("+1 month"), '/'); // 1 mois
-		setcookie("tdfadmin_mbrid", $data->ID, strtotime("+1 month"), '/'); // 1 mois
+		//setcookie("tdfadmin", $hash, strtotime("+1 month"), '/'); // 1 mois
+		//setcookie("tdfadmin_mbrid", $data->ID, strtotime("+1 month"), '/'); // 1 mois
 			
 		message_redirect('Vous êtes maintenant connecté :-)', '', 1);
 	}
@@ -105,8 +107,8 @@ class Admins
 	{
 		session_destroy();
 		
-		setcookie("tdfadmin", false, strtotime("-1 month"), '/');
-		setcookie("tdfadmin_mbrid", false, strtotime("-1 month"), '/');
+		//setcookie("tdfadmin", false, strtotime("-1 month"), '/');
+		//setcookie("tdfadmin_mbrid", false, strtotime("-1 month"), '/');
 		
 		$_SESSION = array();
 		$_COOKIE = array();

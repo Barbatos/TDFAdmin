@@ -23,22 +23,29 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
 ini_set("session.use_trans_sid","0");
 ini_set("url_rewriter.tags","");
+
 session_start();
 
+// On définit le répertoire racine
 define('BASEPATH', dirname(__FILE__));
 
+// On inclut le fichier d'initialisation du site
 require_once(BASEPATH.'/includes/init.php');
 
+// Si jamais on veut se déconnecter
 if(G('logout') && $admin->isLogged()) {
 	$admin->logout();
 	message_redirect('Vous êtes maintenant déconnecté, à bientôt !', '', 1);
 }
 
+// On inclut le contrôleur correspondant à la page demandée en http
 if(is_file($module = BASEPATH.'/modules/'.Routage::GetModule().'/'.Routage::GetAction().'.php')) {
 	require_once($module);
 }
