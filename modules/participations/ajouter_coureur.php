@@ -23,13 +23,17 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que les arguments d'url sont bien présents
 if(!G('annee')){
 	message_redirect('Il faut renseigner une année de participation !', 'participations/liste/');
 }
@@ -38,6 +42,7 @@ if(!G('equipe')){
 	message_redirect('Il faut renseigner une équipe !', 'participations/liste/');
 }
 
+// On récupère les informations de l'équipe
 $stmt = $bdd->prepare('SELECT * FROM TDF_EQUIPE_ANNEE WHERE ANNEE = :annee AND N_EQUIPE = :equipe');
 $stmt->bindValue(':annee', G('annee'));
 $stmt->bindValue(':equipe', G('equipe'));
@@ -45,6 +50,8 @@ $stmt->execute();
 $infosEquipe = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// L'équipe n'existe pas ou n'est pas encore inscrite pour le TDF
+// de l'année demandée
 if(!$infosEquipe){
 	message_redirect('Cette équipe n\'est pas encore inscrite au TDF pour l\'année '.G('annee').' !', 'participations/liste/');
 }
@@ -53,10 +60,13 @@ $currentPage = 'Participations';
 
 include_once(BASEPATH.'/modules/header.php');
 
-
+// Si le formulaire pour ajouter un coureur a été envoyé
 if(P()){
+
+	// Le champ coureur est bien sûr obligatoire :)
 	if(!P('coureur')) error_add('Il est obligatoire de renseigner un coureur !');
 
+	// Si pas d'erreurs, on continue
 	if(!error_exists()){
 
 		// Attribution du numéro de dossard
@@ -112,16 +122,20 @@ if(P()){
 			
 		}
 
+		// Si à ce stade-là on n'a toujours pas de numéro de dossard, c'est que quelque
+		// chose s'est mal passé. On arrête tout.
 		if(!$numDossard || $numDossard == -1){
 			message_redirect('Une erreur est survenue lors de la génération du numéro de dossard du coureur', 'participations/liste/');
 		}
 
+		// Si la checkbox 'jeune' est cochée
 		if(P('jeune'))
 			$jeune = 'o';
 		else {
 			$jeune = null;
 		}
 
+		// On ajoute le coureur à l'équipe
 		$stmt = $bdd->prepare('
 			INSERT INTO TDF_PARTICIPATION 
 			(ANNEE, N_COUREUR, N_EQUIPE, N_SPONSOR, N_DOSSARD, JEUNE)
@@ -198,4 +212,4 @@ if(P()){
 </form>
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

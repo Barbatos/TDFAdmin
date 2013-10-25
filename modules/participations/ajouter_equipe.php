@@ -23,13 +23,17 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que l'argument de l'url est bien entré
 if(!G('annee')){
 	message_redirect('Il faut renseigner une année de participation !', 'sponsors/liste/');
 }
@@ -38,17 +42,22 @@ $currentPage = 'Participations';
 
 include_once(BASEPATH.'/modules/header.php');
 
-
+// Si on a envoyé le formulaire d'ajout d'une équipe
 if(P()){
 
+	// Certains champs sont obligaoitres
 	if(!P('directeur')) error_add('Il est obligatoire d\'avoir au moins un directeur !');
 	if(!P('equipe')) error_add('Il faut spécifier une équipe/sponsor !');
 
+	// Si le directeur et le co-directeur renseignés sont identiques, 
+	// on rappelle à l'admin qu'il est un peu stupide
 	if(P('directeur') == P('directeur2')){
 		error_add('C\'est absurde ! Le directeur et le co-directeur sont la même personne !');
 	}
 
+	// Si pas d'erreurs, on peut ajouter l'équipe
 	if(!error_exists()){
+
 		$stmt = $bdd->prepare('
 			INSERT INTO TDF_EQUIPE_ANNEE 
 			(ANNEE, N_EQUIPE, N_SPONSOR, N_PRE_DIRECTEUR, N_CO_DIRECTEUR)
@@ -96,6 +105,8 @@ if(P()){
 					<option value="">---</option>
 					<?php 
 
+					// On cherche toutes les équipes/sponsors actifs mais qui ne se sont
+					// pas encore enregistrés pour cette année
 					$stmt = $bdd->prepare('
 						SELECT * FROM TDF_SPONSOR s 
 						JOIN TDF_EQUIPE e ON e.N_EQUIPE = s.N_EQUIPE
@@ -123,6 +134,8 @@ if(P()){
 		</div>
 
 		<?php 
+		// On sélectionne la liste de tous les directeurs qui ne sont pas encore
+		// enregistrés dans une équipe pour cette année
 		$stmt = $bdd->prepare('
 			SELECT * FROM TDF_DIRECTEUR d 
 			WHERE NOT EXISTS (
@@ -175,4 +188,4 @@ if(P()){
 </form>
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

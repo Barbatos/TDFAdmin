@@ -23,17 +23,22 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Epreuves';
 
+// Si on envoie le formulaire pour ajouter une épreuve
 if(P()){
 	
+	// On vérifie que les champs sont bien entrés
 	if(!P('annee')) error_add('Le champ année est obligatoire !');
 	if(!P('villeD')) error_add('Le champ ville de départ est obligatoire !');
 	if(!P('villeA')) error_add('Le champ ville d\'arrivée est obligatoire !');
@@ -43,9 +48,12 @@ if(P()){
 	if(!P('date')) error_add('Le champ date est obligatoire !');
 	if(!P('cat_code')) error_add('Le champ catégorie est obligatoire !');
 
+	// Vérification des champs importants
 	verifEpreuve();
 
+	// Si pas d'erreurs, on peut continuer
 	if(!error_exists()){
+
 		// on ajoute l'épreuve dans la base
 		$query = '
 			INSERT INTO TDF_EPREUVE (ANNEE, N_EPREUVE, VILLE_D, VILLE_A, DISTANCE, MOYENNE, CODE_TDF_D, CODE_TDF_A, JOUR, CAT_CODE) 
@@ -210,4 +218,4 @@ include_once(BASEPATH.'/modules/header.php');
 </form>
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

@@ -23,14 +23,18 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
-if(!G('id')){
+// On vérifie que l'url contient bien un numéro d'épreuve et une année à modifier
+if(!G('id') || !G('annee')){
 	exit('Arguments invalides!');
 }
 
@@ -38,6 +42,7 @@ $currentPage = 'Epreuves';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// On récupère les informations de l'épreuve
 $stmt = $bdd->prepare('SELECT * FROM TDF_EPREUVE WHERE N_EPREUVE = :id AND ANNEE = :annee');
 $stmt->bindValue(':id', G('id'));
 $stmt->bindValue(':annee', G('annee'));
@@ -45,12 +50,15 @@ $stmt->execute();
 $infosEpreuve = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// L'épreuve est introuvable
 if(empty($infosEpreuve)){
-	exit('Epreuve non trouvée !');
+	message_redirect('Epreuve non trouvée !', 'epreuves/liste/');
 }
 
-
+// Si on envoie le formulaire pour modifier une épreuve
 if(P()){
+
+	// On vérifie que tous les champs obligatoires sont bien entrés
 	if(!P('villeD')) error_add('Le champ ville de départ est obligatoire !');
 	if(!P('villeA')) error_add('Le champ ville d\'arrivée est obligatoire !');
 	if(!P('distance')) error_add('Le champ distance est obligatoire !');
@@ -59,9 +67,12 @@ if(P()){
 	if(!P('date')) error_add('Le champ date est obligatoire !');
 	if(!P('cat_code')) error_add('Le champ catégorie est obligatoire !');
 
+	// On vérifie les champs importants
 	verifEpreuve();
 
+	// Si pas d'erreurs, on peut continuer
 	if(!error_exists()){
+		
 		// on modifie l'épreuve dans la base
 		$query = '
 			UPDATE TDF_EPREUVE SET VILLE_D = :villed, 

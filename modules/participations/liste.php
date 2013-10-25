@@ -23,9 +23,12 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
@@ -61,6 +64,9 @@ include_once(BASEPATH.'/modules/header.php');
 </form>
 
 <?php 
+
+// Si on a renseigné une année dans l'url, on liste toutes les équipes
+// participant au tour de france de cette année
 if(G('annee')) {
 
 	$stmt = $bdd->prepare('
@@ -80,7 +86,7 @@ if(G('annee')) {
 	');
 	$stmt->bindValue(':annee', G('annee'));
 	$stmt->execute();
-	$adrien = $stmt->fetchAll(PDO::FETCH_OBJ);
+	$listeEquipes = $stmt->fetchAll(PDO::FETCH_OBJ);
 	$stmt->closeCursor();
 ?>
 
@@ -106,16 +112,16 @@ if(G('annee')) {
 
 	<tbody>
 		<?php 
-		foreach($adrien as $il => $iz){ // LOLOLOLOL Aziliz
+		foreach($listeEquipes as $l){ 
 		?>
 		<tr>
-			<td><?= $iz->ANNEE ?></td>
-			<td><?= $iz->N_EQUIPE ?></td>
-			<td><?= $iz->NOM ?></td>
-			<td><?= $iz->PRENOMDIR1 . ' ' . $iz->NOMDIR1 ?></td>
-			<td><?= $iz->PRENOMDIR2 . ' ' . $iz->NOMDIR2 ?></td>
-			<td><?= $iz->NB_COUREURS ?></td>
-			<td><a href="<?= $Site['base_address'] ?>participations/liste-coureurs/?equipe=<?= $iz->N_EQUIPE ?>&annee=<?= $iz->ANNEE ?>">Voir la liste des coureurs</a></td>
+			<td><?= $l->ANNEE ?></td>
+			<td><?= $l->N_EQUIPE ?></td>
+			<td><?= $l->NOM ?></td>
+			<td><?= $l->PRENOMDIR1 . ' ' . $l->NOMDIR1 ?></td>
+			<td><?= $l->PRENOMDIR2 . ' ' . $l->NOMDIR2 ?></td>
+			<td><?= $l->NB_COUREURS ?></td>
+			<td><a href="<?= $Site['base_address'] ?>participations/liste-coureurs/?equipe=<?= $l->N_EQUIPE ?>&annee=<?= $l->ANNEE ?>">Voir la liste des coureurs</a></td>
 		</tr>
 		<?php 	
 		}

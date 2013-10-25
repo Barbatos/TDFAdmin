@@ -23,9 +23,12 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
@@ -51,6 +54,8 @@ if(!G('equipe') && !G('new')){
 			<select name="equipe">
 				<option value="">---</option>
 				<?php 
+
+				// On sélectionne toutes les équipes actives
 				$stmt = $bdd->prepare('
 					SELECT * FROM TDF_EQUIPE e
 					LEFT JOIN TDF_SPONSOR s ON s.N_EQUIPE = e.N_EQUIPE
@@ -64,6 +69,7 @@ if(!G('equipe') && !G('new')){
 				$stmt->execute();
 				$listeEquipes = $stmt->fetchAll(PDO::FETCH_OBJ);
 				$stmt->closeCursor();
+
 				foreach($listeEquipes as $le){
 				?>
 				<option value="<?= $le->N_EQUIPE ?>"><?= $le->NOM ?></option>
@@ -82,22 +88,30 @@ if(!G('equipe') && !G('new')){
 // On veut créer un nouveau sponsor pour une nouvelle équipe
 else if(!G('equipe') && G('new')){
 
+	// Si le formulaire a été envoyé
 	if(P()){
+
+		// On vérifie que les champs obligatoires ont bien été entrés
 		if(!P('nom')) error_add('Le champ Nom est obligatoire !');
 		if(!P('pays')) error_add('Le champ Pays est obligatoire !');
 		if(!P('anneeCreation')) error_add('Le champ année de création pour l\'équipe est obligatoire !');
 
+		// Si l'année de participation du sponsor est plus vieille que l'année
+		// de création de l'équipe...
 		if(P('annee') && (P('annee') < P('anneeCreation'))) {
 			error_add('Cela n\'a aucun sens ! L\'année de participation du sponsor est plus vieille que l\'année de création de l\'équipe !!!');
 		}
 
+		// FIXME: quick fixes à propos du nom 
 		$nom = P('nom');
 		$nom = strtoupper($nom);
 
+		// On vérifie que le nom abrégé du sponsor est valide
 		if(!checkAbregeSponsor(P('nomAbrege'))){
 			error_add('Le nom abrégé est invalide !');
 		}
 
+		// S'il n'y a pas d'erreurs, on continue
 		if(!error_exists()){
 
 			// On vérifie qu'un sponsor ayant le même nom ne soit pas déjà dans la 
@@ -137,6 +151,7 @@ else if(!G('equipe') && G('new')){
 			$stmt->execute();
 			$stmt->closeCursor();
 
+			// On ajoute le sponsor
 			$stmt = $bdd->prepare('
 				INSERT INTO TDF_SPONSOR (N_EQUIPE, N_SPONSOR, NOM, NA_SPONSOR, CODE_TDF, ANNEE_SPONSOR)
 				VALUES 
@@ -254,18 +269,22 @@ else if(!G('equipe') && G('new')){
 // Ajouter un sponsor à une équipe existante
 else {
 
+	// On sélectionne toutes les équipes avec leurs sponsors actuels
 	$stmt = $bdd->prepare('
 		SELECT * FROM TDF_EQUIPE e 
 		JOIN TDF_SPONSOR s ON s.N_EQUIPE = e.N_EQUIPE
 		WHERE e.N_EQUIPE = :equipe 
 		AND s.N_SPONSOR = (SELECT MAX(N_SPONSOR) FROM TDF_SPONSOR s2 WHERE s2.N_EQUIPE = :equipe)
-	'); /* AND e.ANNEE_DISPARITION IS NOT NULL */
+	'); 
 	$stmt->bindValue(':equipe', G('equipe'));
 	$stmt->execute();
 	$infosEquipe = $stmt->fetch(PDO::FETCH_OBJ);
 	$stmt->closeCursor();
 
+	// Si le formulaire a été envoyé
 	if(P()){
+
+		// On vérifie que les champs obligatoires ont bien été entrés
 		if(!P('nom')) error_add('Le champ Nom est obligatoire !');
 		if(!P('pays')) error_add('Le champ Pays est obligatoire !');
 
@@ -273,16 +292,7 @@ else {
 			error_add('Cela n\'a aucun sens ! L\'année de participation du sponsor est plus vieille que l\'année de création de l\'équipe !!!');
 		}
 
-		//
-		//
-		//
-		//
-		// TODO : vérifier champ nom
-		//
-		//
-		//
-		//
-
+		// S'il n'y a pas d'erreurs
 		if(!error_exists()){
 
 			// On vérifie qu'un sponsor ayant le même nom ne soit pas déjà dans la 
@@ -304,6 +314,7 @@ else {
 				message_redirect('Il existe déjà un sponsor actif ayant ce nom et ce pays.', 'sponsors/ajouter/');
 			}
 
+			// On ajoute le sponsor
 			$stmt = $bdd->prepare('
 				INSERT INTO TDF_SPONSOR (N_EQUIPE, N_SPONSOR, NOM, NA_SPONSOR, CODE_TDF, ANNEE_SPONSOR)
 				VALUES 
@@ -400,4 +411,4 @@ else {
 
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

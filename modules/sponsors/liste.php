@@ -23,9 +23,12 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
@@ -45,6 +48,7 @@ if( (G('t') == 'DESC') || (G('t') == 'ASC') ) {
 	$type = G('t');
 }
 
+// On récupère la liste de tous les sponsors
 $stmt = $bdd->prepare('SELECT * FROM TDF_SPONSOR ORDER BY '.$order.' '.$type);
 $stmt->execute();
 $listeSponsors = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -90,4 +94,3 @@ $stmt->closeCursor();
 
 <?php 
 include_once(BASEPATH.'/modules/footer.php');
-?>

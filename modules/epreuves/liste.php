@@ -23,9 +23,12 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
@@ -37,14 +40,11 @@ include_once(BASEPATH.'/modules/header.php');
 $order = 'ANNEE DESC, N_EPREUVE';
 $type = 'DESC';
 
-if(G('o')){
-	$order = G('o');
-}
+if(G('o')) $order = G('o');
 
-if( (G('t') == 'DESC') || (G('t') == 'ASC') ) {
-	$type = G('t');
-}
+if( (G('t') == 'DESC') || (G('t') == 'ASC') ) $type = G('t');
 
+// On récupère la liste de toutes les épreuves
 $stmt = $bdd->prepare('SELECT * FROM TDF_EPREUVE ORDER BY '.$order.' '.$type);
 $stmt->execute();
 $listeEpreuves = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -113,4 +113,3 @@ if((G('action') == 'supprimer') && G('id') && G('annee')){
 
 <?php 
 include_once(BASEPATH.'/modules/footer.php');
-?>

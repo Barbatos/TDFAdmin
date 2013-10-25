@@ -23,13 +23,18 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que le numéro de l'équipe et l'année sont bien 
+// renseignées dans l'url
 if(!G('equipe') || !G('annee')){
 	message_redirect('Il manque des arguments dans la requête !', 'participations/liste/');
 }
@@ -38,7 +43,7 @@ $currentPage = 'Participations';
 
 include_once(BASEPATH.'/modules/header.php');
 
-
+// On récupère les informations de l'équipe
 $stmt = $bdd->prepare('
 	SELECT * FROM TDF_EQUIPE_ANNEE e
 	JOIN TDF_SPONSOR s ON s.N_EQUIPE = e.N_EQUIPE AND s.N_SPONSOR = e.N_SPONSOR
@@ -50,6 +55,8 @@ $stmt->execute();
 $infosEquipe = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// On récupère la liste des coureurs inscrits à cette équipe 
+// pour l'année demandée
 $stmt = $bdd->prepare('
 	SELECT * FROM TDF_PARTICIPATION p 
 	JOIN TDF_COUREUR c ON c.N_COUREUR = p.N_COUREUR
@@ -107,6 +114,4 @@ $stmt->closeCursor();
 
 
 <?php 
-
 include_once(BASEPATH.'/modules/footer.php');
-
