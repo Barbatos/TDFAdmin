@@ -23,28 +23,37 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Coureurs';
 
+// Si on a envoyé le formulaire pour ajouter un coureur
 if(P()){
+
+	// On vérifie que les champs obligatoires ont bien été entrés
 	if(!P('nom')) error_add('Le champ "nom" est obligatoire !');
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
 	if(!P('pays')) error_add('Le champ "pays" est obligatoire !');
 	
+	// On vérifie que le nom a été entré correctement
 	if(!checkNomCoureur(P('nom'))){
 		error_add('Le champ nom doit être entré en majuscules sans accents');
 	}
 
+	// On vérifie que le prénom a été entré correctement
 	if(!checkPrenomCoureur(P('prenom'))){
 		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
 	}
 
+	// Si pas d'erreurs
 	if(!error_exists()){
 
 		// on vérifie que le coureur n'existe pas déjà dans la base
@@ -56,6 +65,7 @@ if(P()){
 		$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$stmt->closeCursor();
 
+		// Le coureur existe déjà...
 		if($correspondance){
 			message_redirect('Ce coureur existe déjà !', 'coureurs/ajouter/');
 		}

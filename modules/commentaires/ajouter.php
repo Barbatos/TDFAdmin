@@ -23,29 +23,34 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Commentaires';
 
+// Si on a envoyé le formulaire pour ajouter un commentaire
 if(P()){
 	
-	// on vérifie que l'année n'existe pas déjà dans la base
+	// on vérifie que le commentaire n'existe pas déjà dans la base
 	$stmt = $bdd->prepare('SELECT * FROM TDF_COMMENTAIRE WHERE ANNEE = :annee');
 	$stmt->bindValue(':annee', P('annee'));
 	$stmt->execute();
 	$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
 	$stmt->closeCursor();
 
+	// Le commentaire existe déjà...
 	if($correspondance){
 		message_redirect('Un commentaire pour cette année existe déjà !', 'commentaires/ajouter/');
 	}
 
-	// on ajoute le commentaire
+	// On ajoute le commentaire
 	$stmt = $bdd->prepare('
 		INSERT INTO TDF_COMMENTAIRE (ANNEE, COMMENTAIRE) VALUES (:annee, :com)');
 	$stmt->bindValue(':annee', P('annee'));

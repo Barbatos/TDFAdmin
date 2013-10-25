@@ -23,13 +23,17 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que le numéro du coureur a bien été renseigné dans l'url
 if(!G('id')){
 	exit('Arguments invalides!');
 }
@@ -38,29 +42,37 @@ $currentPage = 'Coureurs';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// On récupère les informations du coureur en question
 $stmt = $bdd->prepare('SELECT * FROM TDF_COUREUR WHERE N_COUREUR = :id');
 $stmt->bindValue(':id', G('id'));
 $stmt->execute();
 $infosCoureur = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// Ce coureur n'existe pas
 if(empty($infosCoureur)){
 	exit('Coureur non trouvé !');
 }
 
+// Le formulaire d'ajout d'un coureur a été envoyé
 if(P()){
+
+	// On vérifie que tous les champs obligatoires ont été entrés
 	if(!P('nom')) error_add('Le champ "nom" est obligatoire !');
 	if(!P('prenom')) error_add('Le champ "prénom" est obligatoire !');
 	if(!P('pays')) error_add('Le champ "pays" est obligatoire !');
 	
+	// On vérifie que le nom du coureur est correct
 	if(!checkNomCoureur(P('nom'))){
 		error_add('Le champ nom doit être entré en majuscules sans accents');
 	}
 
+	// On vérifie que le prénom du coureur est correct
 	if(!checkPrenomCoureur(P('prenom'))){
 		error_add('Le prénom doit avoir une première lettre majuscule sans accent et les lettres suivantes en minuscules.');
 	}
 	
+	// Si pas d'erreurs, on peut effectuer la modification
 	if(!error_exists()){
 
 		// on modifie le coureur dans la bdd

@@ -23,30 +23,39 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Categories';
 
+// Si le formulaire d'ajout d'une catégorie a été envoyé
 if(P()){
 	
+	// On vérifie que les champs ont bien été entrés
 	if(!P('cat')) error_add('Le cat code est obligatoire !');
 	if(!P('tep')) error_add('Le tep code est obligatoire !');
 	if(!P('libelle')) error_add('Le libellé est obligatoire !');
 
+	// On vérifie le format du cat code
 	if(!checkCatCode(P('cat'))){
 		error_add('Le cat code n\'est pas bon !');
 	}
 
+	// On vérifie le format du tep code
 	if(!checkTepCode(P('tep'))){
 		error_add('Le tep code n\'est pas bon !');
 	}
 
+	// S'il n'y a pas d'erreurs, on peut ajouter la catégorie
 	if(!error_exists()){
+
 		// on vérifie que la catégorie n'existe pas déjà dans la base
 		$stmt = $bdd->prepare('SELECT * FROM TDF_CATEGORIE_EPREUVE WHERE CAT_CODE = :id');
 		$stmt->bindValue(':id', P('id'));
@@ -54,11 +63,12 @@ if(P()){
 		$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$stmt->closeCursor();
 
+		// La catégorie existe déjà
 		if($correspondance){
 			message_redirect('Une catégorie d\'épreuve existe déjà !', 'categories-epreuves/ajouter/');
 		}
 
-		// on ajoute la catégorie
+		// On ajoute la catégorie
 		$stmt = $bdd->prepare('
 			INSERT INTO TDF_CATEGORIE_EPREUVE (CAT_CODE, TEP_CODE, LIBELLE) VALUES (:cat, :tep, :libelle)');
 		$stmt->bindValue(':cat', P('cat'));
@@ -105,4 +115,4 @@ include_once(BASEPATH.'/modules/header.php');
 </form>
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

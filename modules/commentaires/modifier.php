@@ -23,13 +23,18 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que l'utilisateur a bien renseigné une année
+// de commentaire à modifier
 if(!G('id')){
 	exit('Arguments invalides!');
 }
@@ -38,16 +43,19 @@ $currentPage = 'Commentaires';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// On récupère les informations du commentaire
 $stmt = $bdd->prepare('SELECT * FROM TDF_COMMENTAIRE WHERE ANNEE = :id');
 $stmt->bindValue(':id', G('id'));
 $stmt->execute();
 $infosCommentaire = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// Le commentaire n'existe pas...
 if(empty($infosCommentaire)){
 	exit('Année non trouvée !');
 }
 
+// Si on a envoyé le formulaire d'édition du commentaire
 if(P('commentaire') && P('annee')){
 
 	$stmt = $bdd->prepare('

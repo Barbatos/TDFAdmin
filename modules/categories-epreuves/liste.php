@@ -23,9 +23,12 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
@@ -34,17 +37,14 @@ $currentPage = 'Categories';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// Permet de gérer les ordres d'affichage de toutes les données
 $order = 'CAT_CODE';
 $type = 'ASC';
 
-if(G('o')){
-	$order = G('o');
-}
+if(G('o')) $order = G('o');
+if( (G('t') == 'DESC') || (G('t') == 'ASC') ) $type = G('t');
 
-if( (G('t') == 'DESC') || (G('t') == 'ASC') ) {
-	$type = G('t');
-}
-
+// On sélectionne la liste de toutes les catégories d'épreuves
 $stmt = $bdd->prepare('SELECT * FROM TDF_CATEGORIE_EPREUVE ORDER BY '.$order.' '.$type);
 $stmt->execute();
 $listeCategories = $stmt->fetchAll(PDO::FETCH_OBJ);

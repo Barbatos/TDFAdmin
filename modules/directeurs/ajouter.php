@@ -23,17 +23,22 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Directeurs';
 
+// Si le formulaire pour ajouter un directeur a été envoyé
 if(P()){
 	
+	// On vérifie que les informations obligatoires ont bien été entrées
 	if(!P('nom')) error_add('Il faut renseigner un nom !');
 	if(!P('prenom')) error_add('Il faut renseigner un prénom !');
 
@@ -42,12 +47,15 @@ if(P()){
 		error_add('Le champ nom est invalide !');
 	}
 
+	// On vérifie que le prénom a été entré correctement
 	if(!checkPrenomCoureur(P('prenom'))){
 		error_add('le champ prénom est invalide !');
 	}
 
+	// Si pas d'erreurs on peut ajouter le directeur
 	if(!error_exists()){
-		// on vérifie que le directeur n'existe pas déjà dans la base
+
+		// On vérifie que le directeur n'existe pas déjà dans la base
 		$stmt = $bdd->prepare('SELECT * FROM TDF_DIRECTEUR WHERE NOM = :nom AND PRENOM = :prenom');
 		$stmt->bindValue(':nom', P('nom'));
 		$stmt->bindValue(':prenom', P('prenom'));
@@ -55,11 +63,12 @@ if(P()){
 		$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
 		$stmt->closeCursor();
 
+		// Le directeur est déjà présent dans la base, derp derp
 		if($correspondance){
 			message_redirect('Un directeur avec ce nom et ce prénom existe déjà !', 'directeurs/ajouter/');
 		}
 
-		// on ajoute le directeur
+		// On ajoute le directeur
 		$stmt = $bdd->prepare('
 			INSERT INTO TDF_DIRECTEUR (N_DIRECTEUR, NOM, PRENOM) VALUES ( (SELECT MAX(N_DIRECTEUR) FROM TDF_DIRECTEUR) + 1, :nom, :prenom)');
 		$stmt->bindValue(':nom', P('nom'));
@@ -99,4 +108,4 @@ include_once(BASEPATH.'/modules/header.php');
 </form>
 
 
-<?php include_once(BASEPATH.'/modules/footer.php'); ?>
+<?php include_once(BASEPATH.'/modules/footer.php'); 

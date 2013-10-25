@@ -23,13 +23,17 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// On vérifie que le numéro du directeur à modifier a bien été renseigné
 if(!G('id')){
 	exit('Arguments invalides!');
 }
@@ -38,27 +42,34 @@ $currentPage = 'Directeurs';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// On récupère les infos du directeur
 $stmt = $bdd->prepare('SELECT * FROM TDF_DIRECTEUR WHERE N_DIRECTEUR = :id');
 $stmt->bindValue(':id', G('id'));
 $stmt->execute();
 $infosDirecteur = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// Le directeur n'a pas été trouvé
 if(empty($infosDirecteur)){
 	exit('Directeur non trouvé !');
 }
 
+// Si le formulaire de modification a bien été envoyé
 if(P('nom') && P('prenom')){
 
+	// On vérifie que le nom du directeur est valide
 	if(!checkNomCoureur(P('nom'))){
 		error_add('Le nom est invalide !');
 	}
 
+	// Idem pour le prénom
 	if(!checkPrenomCoureur(P('prenom'))){
 		error_add('Le prénom est invalide !');
 	}
 
+	// Si pas d'erreurs, on peut mettreà  jour
 	if(!error_exists()){
+		
 		$stmt = $bdd->prepare('
 			UPDATE TDF_DIRECTEUR 
 			SET NOM = :nom, PRENOM = :prenom 
