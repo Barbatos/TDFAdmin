@@ -82,6 +82,7 @@ $prenomsCoureurs = array(
 	'Aa--Aa\'Aa',
 
 	'Deréàöôêëù',
+	'Eééééééééééééé',
 	'€',
 	'$',
 	'+=/*-+',

@@ -63,6 +63,7 @@ $nomsCoureurs = array(
 	'J---e-Êan',
 	'Jean--PaÊul--Durand',
 	'Jean--PaÊul-Durand',
+	"ébé-ébé-ébé"
 );
 
 foreach($nomsCoureurs as $val){
