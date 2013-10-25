@@ -23,13 +23,17 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
+// Il faut renseigner l'année à modifier
 if(!G('id')){
 	exit('Arguments invalides!');
 }
@@ -38,16 +42,20 @@ $currentPage = 'Calendrier';
 
 include_once(BASEPATH.'/modules/header.php');
 
+// On récupère les informations sur l'année demandée et on en 
+// profite pour vérifier qu'elle existe dans la base
 $stmt = $bdd->prepare('SELECT * FROM TDF_ANNEE WHERE ANNEE = :id');
 $stmt->bindValue(':id', G('id'));
 $stmt->execute();
 $infosAnnee = $stmt->fetch(PDO::FETCH_OBJ);
 $stmt->closeCursor();
 
+// L'année n'existe pas dans la base
 if(empty($infosAnnee)){
 	exit('Année non trouvée !');
 }
 
+// Si on a envoyé le formulaire pour modifier l'année
 if(P('repos') && P('annee')){
 
 	$stmt = $bdd->prepare('

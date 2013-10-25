@@ -23,29 +23,34 @@ THE SOFTWARE.
 @authors 	Charles 'Barbatos' Duprey <cduprey@f1m.fr> && Adrien 'soullessoni' Demoget
 @created 	20/09/2013
 @copyright 	(c) 2013 TDFAdmin
+@licence 	http://opensource.org/licenses/MIT
+@link 		https://github.com/Barbatos/TDFAdmin
 
 */
 
+// Impossible de visualiser la page si on n'est pas identifié
 if(!$admin->isLogged()){
 	message_redirect('Vous devez être identifié pour voir cette page !');
 }
 
 $currentPage = 'Calendrier';
 
+// Si le formulaire a été envoyé
 if(P()){
 	
-	// on vérifie que l'année n'existe pas déjà dans la base
+	// On vérifie que l'année n'existe pas déjà dans la base
 	$stmt = $bdd->prepare('SELECT * FROM TDF_ANNEE WHERE ANNEE = :annee');
 	$stmt->bindValue(':annee', P('annee'));
 	$stmt->execute();
 	$correspondance = $stmt->fetchAll(PDO::FETCH_OBJ);
 	$stmt->closeCursor();
 
+	// L'année existe déjà
 	if($correspondance){
 		message_redirect('Cette année existe déjà !', 'calendrier/ajouter/');
 	}
 
-	// on ajoute l'année dans la base
+	// On ajoute l'année dans la base
 	$stmt = $bdd->prepare('
 		INSERT INTO TDF_ANNEE (ANNEE, JOUR_REPOS) VALUES (:annee, :repos)');
 	$stmt->bindValue(':annee', P('annee'));
@@ -53,7 +58,8 @@ if(P()){
 	$stmt->execute();
 	$stmt->closeCursor();
 
-	message_redirect('L\'année '.P('annee').' a bien été ajoutée à la base !', 'calendrier/ajouter/', 1);
+	// Redirection vers la liste des années
+	message_redirect('L\'année '.P('annee').' a bien été ajoutée à la base !', 'calendrier/liste/', 1);
 }
 
 include_once(BASEPATH.'/modules/header.php');
