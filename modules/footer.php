@@ -30,7 +30,7 @@ THE SOFTWARE.
 ?>
 
  		</div>
- 		<script src="<?= $Site['base_address'] ?>assets/js/jquery.js"></script>
- 		<script src="<?= $Site['base_address'] ?>assets/js/bootstrap-dropdown.js"></script>
+ 		<script src="//bootstrapdocs.com/v2.3.1/docs/assets/js/jquery.js"></script>
+ 		<script src="//bootstrapdocs.com/v2.3.1/docs/assets/js/bootstrap-dropdown.js"></script>
   	</body>
 </html>

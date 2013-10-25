@@ -38,7 +38,7 @@ THE SOFTWARE.
 	    <meta name="description" content="Administration TDF">
 	    <meta name="author" content="Charles">
 
-	    <link href="<?= $Site['base_address'] ?>assets/css/bootstrap.css" rel="stylesheet">
+	    <link href="//bootstrapdocs.com/v2.3.1/docs/assets/css/bootstrap.css" rel="stylesheet">
 	    <style type="text/css">
 	      body {
 	        padding-top: 40px;
@@ -47,10 +47,10 @@ THE SOFTWARE.
 	      }
 
 	    </style>
-	    <link href="<?= $Site['base_address'] ?>assets/css/bootstrap-responsive.css" rel="stylesheet">
+	    <link href="//bootstrapdocs.com/v2.3.1/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
 
 	    <!--[if lt IE 9]>
-	      	<script src="<?= $Site['base_address'] ?>assets/js/html5shiv.js"></script>
+	      	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
 	    <![endif]-->
   	</head>
   	<body>
